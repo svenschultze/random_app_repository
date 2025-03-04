@@ -1,0 +1,44 @@
+implement the following app: 
+SpeedDate is a fast-paced virtual dating app that connects users through 5-minute video calls. The experience begins with an engaging landing page and smooth onboarding process, followed by an intuitive registration and profile setup. Users access a central dashboard for scheduled dates and notifications, then enter a matchmaking flow with a queue and waiting room before starting a minimalistic, timer-driven video call. After the call, a simple feedback screen captures mutual interest, enabling a seamless transition to further chat and extended interaction if matched. Additional features include activity tracking, personalized insights, and robust settings for privacy and preferences.
+
+Specifics Outline:
+
+Landing & Onboarding:
+
+Engaging landing page with clear value proposition and visual appeal.
+Introductory tour or explainer video to illustrate the speed dating process.
+Registration & Profile Setup:
+
+Easy sign-up with email or social login options.
+Quick profile creation with photo uploads, bio, interests, and dating preferences.
+Home Dashboard:
+
+Central hub displaying upcoming dates, notifications, and quick access to key functions.
+Navigation for Home, Matches, Chats, and Settings.
+Matchmaking Flow:
+
+“Start Speed Dating” button to join a match queue.
+Waiting room with a countdown and icebreaker tips.
+Video Call Experience:
+
+Full-screen video interface with a visible countdown timer.
+Minimal controls: mute/unmute, video toggle, and end call button.
+Discreet safety and feedback options during the call.
+Post-Call Interaction:
+
+Feedback screen with simple “Yes/No” options and optional text feedback.
+Seamless transition to chat if mutual interest is confirmed.
+Additional Features:
+
+History & Insights section to track past dates and provide analytics.
+Customizable settings for account management, dating preferences, and privacy.
+
+For all inputs and buttons or other control elements that the user can interact with define an id. You can add that id to the html element by declaring the v-voix="'id'" attribute. the id should be clear on what the element does. For example, a button to submit a contact form should be called something like "Submit Contact Form". Additionally, you may write the hint="some description" attribute on those html elements to give more information about usage, order of usage in comparison to other elements, and so on. Keep this a short if you need it. Additionally, review the router routes. add a meta route-description to any router to describe what it is for. For example:
+{
+   "path":"/",
+   "name":"home",
+   "component":"Home",
+   "meta":{
+      "voix-description":"Start page of the application. Shows..."
+   }
+}
