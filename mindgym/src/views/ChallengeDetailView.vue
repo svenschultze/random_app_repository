@@ -197,8 +197,18 @@ onMounted(() => {
         </div>
         
         <div class="start-actions">
-          <button class="btn btn-primary" @click="startChallenge">Start Challenge</button>
-          <button class="btn btn-secondary" @click="backToHome">Back to Home</button>
+          <button 
+            class="btn btn-primary" 
+            @click="startChallenge"
+            v-voix="'Start Challenge'"
+            hint="Begin this mental exercise"
+          >Start Challenge</button>
+          <button 
+            class="btn btn-secondary" 
+            @click="backToHome"
+            v-voix="'Return to Home'"
+            hint="Go back to the home page"
+          >Back to Home</button>
         </div>
       </div>
     </div>
@@ -230,6 +240,8 @@ onMounted(() => {
             class="matrix-cell"
             :class="{ 'active': cell }"
             @click="handleCellClick(index)"
+            v-voix="'Matrix Cell ' + (index + 1)"
+            hint="Select this cell as part of the pattern"
           ></div>
         </div>
         
@@ -238,7 +250,12 @@ onMounted(() => {
         </div>
       </div>
       
-      <button class="btn btn-danger" @click="completeChallenge">End Challenge</button>
+      <button 
+        class="btn btn-danger" 
+        @click="completeChallenge"
+        v-voix="'End Challenge'"
+        hint="Finish the current challenge and see your results"
+      >End Challenge</button>
     </div>
     
     <!-- Completed Step -->
@@ -266,8 +283,18 @@ onMounted(() => {
       </div>
       
       <div class="completion-actions">
-        <button class="btn btn-primary" @click="backToHome">Back to Home</button>
-        <button class="btn btn-secondary" @click="router.push('/challenges')">More Challenges</button>
+        <button 
+          class="btn btn-primary" 
+          @click="backToHome"
+          v-voix="'Back to Home'"
+          hint="Return to the home page"
+        >Back to Home</button>
+        <button 
+          class="btn btn-secondary" 
+          @click="router.push('/challenges')"
+          v-voix="'More Challenges'"
+          hint="Browse more challenges to complete"
+        >More Challenges</button>
       </div>
     </div>
   </div>

@@ -102,6 +102,8 @@ function completeOnboarding() {
             v-model="userData.name" 
             placeholder="Enter your name" 
             required
+            v-voix="'Name Input'"
+            hint="Enter your name to personalize your experience"
           />
         </div>
       </div>
@@ -120,6 +122,8 @@ function completeOnboarding() {
             class="challenge-type-option"
             :class="{ selected: userData.preferences.challengeTypes.includes(type.id) }"
             @click="toggleChallengeType(type.id)"
+            v-voix="'Select ' + type.name"
+            hint="Toggle selection of this challenge type"
           >
             <div class="type-icon">{{ type.icon }}</div>
             <div class="type-name">{{ type.name }}</div>
@@ -141,6 +145,8 @@ function completeOnboarding() {
             class="difficulty-option"
             :class="{ selected: userData.preferences.difficulty === level.id }"
             @click="selectDifficulty(level.id)"
+            v-voix="'Select ' + level.name + ' Difficulty'"
+            hint="Choose this difficulty level for your challenges"
           >
             <div class="difficulty-name">{{ level.name }}</div>
             <div class="difficulty-description">{{ level.description }}</div>
@@ -160,6 +166,8 @@ function completeOnboarding() {
             type="button" 
             class="goal-decrement" 
             @click="userData.preferences.dailyGoal = Math.max(1, userData.preferences.dailyGoal - 1)"
+            v-voix="'Decrease Daily Goal'"
+            hint="Reduce the number of daily challenges"
           >
             -
           </button>
@@ -168,6 +176,8 @@ function completeOnboarding() {
             type="button" 
             class="goal-increment" 
             @click="userData.preferences.dailyGoal = Math.min(5, userData.preferences.dailyGoal + 1)"
+            v-voix="'Increase Daily Goal'"
+            hint="Increase the number of daily challenges"
           >
             +
           </button>
@@ -185,6 +195,8 @@ function completeOnboarding() {
           type="button" 
           class="btn btn-secondary" 
           @click="prevStep"
+          v-voix="'Go Back'"
+          hint="Return to the previous step"
         >
           Back
         </button>
@@ -193,6 +205,8 @@ function completeOnboarding() {
           class="btn btn-primary" 
           @click="nextStep" 
           :disabled="currentStep === 1 && !userData.name"
+          v-voix="currentStep < totalSteps ? 'Next Step' : 'Complete Onboarding'"
+          hint="Proceed to the next step or complete the setup"
         >
           {{ currentStep < totalSteps ? 'Next' : 'Get Started' }}
         </button>

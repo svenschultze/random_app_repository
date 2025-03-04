@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useUserStore } from '../stores/user'
 
 const userStore = useUserStore()
@@ -187,6 +187,8 @@ function submitNewDiscussion() {
           <button 
             class="new-discussion-btn" 
             @click="showNewDiscussionForm = !showNewDiscussionForm"
+            v-voix="showNewDiscussionForm ? 'Cancel New Discussion' : 'Create New Discussion'"
+            hint="Toggle the discussion creation form"
           >
             {{ showNewDiscussionForm ? 'Cancel' : 'New Discussion' }}
           </button>
@@ -203,12 +205,19 @@ function submitNewDiscussion() {
               type="text" 
               v-model="newDiscussion.title" 
               placeholder="Enter discussion title"
+              v-voix="'Discussion Title Input'"
+              hint="Enter a title for your new discussion"
             />
           </div>
           
           <div class="form-group">
             <label for="discussion-category">Category</label>
-            <select id="discussion-category" v-model="newDiscussion.category">
+            <select 
+              id="discussion-category" 
+              v-model="newDiscussion.category"
+              v-voix="'Select Discussion Category'"
+              hint="Choose a category for your discussion"
+            >
               <option 
                 v-for="category in discussionCategories" 
                 :key="category.id" 
@@ -226,10 +235,17 @@ function submitNewDiscussion() {
               v-model="newDiscussion.content" 
               placeholder="Enter your discussion content"
               rows="5"
+              v-voix="'Discussion Content Input'"
+              hint="Enter the main content of your discussion"
             ></textarea>
           </div>
           
-          <button class="submit-btn" @click="submitNewDiscussion">Create Discussion</button>
+          <button 
+            class="submit-btn" 
+            @click="submitNewDiscussion"
+            v-voix="'Submit Discussion'"
+            hint="Create and post your new discussion"
+          >Create Discussion</button>
         </div>
         
         <!-- Discussion Categories -->
@@ -237,6 +253,8 @@ function submitNewDiscussion() {
           <button 
             :class="{ selected: selectedCategory === 'all' }" 
             @click="selectedCategory = 'all'"
+            v-voix="'View All Categories'"
+            hint="Show discussions from all categories"
           >
             All
           </button>
@@ -245,6 +263,8 @@ function submitNewDiscussion() {
             :key="category.id"
             :class="{ selected: selectedCategory === category.id }" 
             @click="selectedCategory = category.id"
+            v-voix="'Filter by ' + category.name"
+            hint="Show only discussions in the {{category.name}} category"
           >
             <span class="category-icon">{{ category.icon }}</span>
             {{ category.name }}
@@ -253,7 +273,13 @@ function submitNewDiscussion() {
         
         <!-- Discussion List -->
         <div class="discussion-list">
-          <div v-for="topic in filteredDiscussions" :key="topic.id" class="discussion-item">
+          <div 
+            v-for="topic in filteredDiscussions" 
+            :key="topic.id" 
+            class="discussion-item"
+            v-voix="'Discussion: ' + topic.title"
+            hint="Open this discussion thread"
+          >
             <div class="discussion-main">
               <div 
                 class="category-badge"
@@ -293,7 +319,13 @@ function submitNewDiscussion() {
         <div class="featured-members">
           <h3>Featured Members</h3>
           <div class="members-list">
-            <div v-for="member in featuredMembers" :key="member.id" class="member-card">
+            <div 
+              v-for="member in featuredMembers" 
+              :key="member.id" 
+              class="member-card"
+              v-voix="'Member Profile: ' + member.name"
+              hint="View details for this featured member"
+            >
               <div class="member-avatar">
                 <img :src="member.avatar" :alt="member.name" />
               </div>
@@ -313,7 +345,13 @@ function submitNewDiscussion() {
         <div class="upcoming-events">
           <h3>Upcoming Events</h3>
           <div class="events-list">
-            <div v-for="event in upcomingEvents" :key="event.id" class="event-card">
+            <div 
+              v-for="event in upcomingEvents" 
+              :key="event.id" 
+              class="event-card"
+              v-voix="'Event: ' + event.title"
+              hint="View details about this upcoming event"
+            >
               <div class="event-header">
                 <h4>{{ event.title }}</h4>
                 <div class="event-date">{{ event.date }}</div>

@@ -27,7 +27,12 @@ function getDifficultyColor(difficulty) {
 </script>
 
 <template>
-  <div class="challenge-card" :class="{ 'featured': featured, 'completed': challenge.completed }">
+  <div 
+    class="challenge-card" 
+    :class="{ 'featured': featured, 'completed': challenge.completed }"
+    v-voix="'Challenge Card: ' + challenge.title"
+    hint="Click to view details and start this challenge"
+  >
     <div class="card-header">
       <div class="challenge-thumbnail">{{ challenge.thumbnail }}</div>
       <div class="challenge-info">

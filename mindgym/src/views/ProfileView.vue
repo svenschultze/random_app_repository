@@ -145,7 +145,13 @@ function savePreferences() {
       <div class="profile-section">
         <h2>Badges</h2>
         <div class="badges-grid">
-          <div v-for="badge in availableBadges" :key="badge.id" class="badge-card">
+          <div 
+            v-for="badge in availableBadges" 
+            :key="badge.id" 
+            class="badge-card"
+            v-voix="'Badge: ' + badge.name"
+            hint="View details of this achievement badge"
+          >
             <div class="badge-icon">{{ badge.icon }}</div>
             <div class="badge-details">
               <div class="badge-name">{{ badge.name }}</div>
@@ -165,6 +171,8 @@ function savePreferences() {
                 type="button" 
                 class="goal-decrement" 
                 @click="preferenceForm.dailyGoal = Math.max(1, preferenceForm.dailyGoal - 1)"
+                v-voix="'Decrease Daily Goal'"
+                hint="Reduce the number of daily challenges"
               >
                 -
               </button>
@@ -173,6 +181,8 @@ function savePreferences() {
                 type="button" 
                 class="goal-increment" 
                 @click="preferenceForm.dailyGoal = Math.min(5, preferenceForm.dailyGoal + 1)"
+                v-voix="'Increase Daily Goal'"
+                hint="Increase the number of daily challenges"
               >
                 +
               </button>
@@ -188,6 +198,8 @@ function savePreferences() {
                 class="challenge-type-option"
                 :class="{ selected: preferenceForm.challengeTypes.includes(type.id) }"
                 @click="toggleChallengeType(type.id)"
+                v-voix="'Toggle ' + type.name"
+                hint="Select or deselect this challenge type"
               >
                 <div class="type-icon">{{ type.icon }}</div>
                 <div class="type-name">{{ type.name }}</div>
@@ -204,13 +216,20 @@ function savePreferences() {
                 class="difficulty-option"
                 :class="{ selected: preferenceForm.difficulty === level.id }"
                 @click="preferenceForm.difficulty = level.id"
+                v-voix="'Select ' + level.name + ' Difficulty'"
+                hint="Change your difficulty level to {{level.name}}"
               >
                 {{ level.name }}
               </div>
             </div>
           </div>
           
-          <button class="save-btn" @click="savePreferences">Save Preferences</button>
+          <button 
+            class="save-btn" 
+            @click="savePreferences"
+            v-voix="'Save Preferences'"
+            hint="Update your profile preferences"
+          >Save Preferences</button>
         </div>
       </div>
     </div>

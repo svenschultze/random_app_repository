@@ -26,6 +26,8 @@ const navLinks = [
         :key="link.path" 
         :to="link.path"
         class="nav-link"
+        v-voix="'Navigate to ' + link.name"
+        :hint="'Go to ' + link.name + ' page'"
       >
         <span class="nav-icon">{{ link.icon }}</span>
         <span class="nav-text">{{ link.name }}</span>

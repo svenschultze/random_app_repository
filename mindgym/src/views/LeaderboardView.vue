@@ -176,18 +176,24 @@ onMounted(() => {
           <button 
             :class="{ selected: timeFrame === 'week' }" 
             @click="timeFrame = 'week'"
+            v-voix="'View Weekly Leaderboard'"
+            hint="Display rankings for the current week"
           >
             Week
           </button>
           <button 
             :class="{ selected: timeFrame === 'month' }" 
             @click="timeFrame = 'month'"
+            v-voix="'View Monthly Leaderboard'"
+            hint="Display rankings for the current month"
           >
             Month
           </button>
           <button 
             :class="{ selected: timeFrame === 'allTime' }" 
             @click="timeFrame = 'allTime'"
+            v-voix="'View All Time Leaderboard'"
+            hint="Display all-time rankings"
           >
             All Time
           </button>
@@ -200,18 +206,24 @@ onMounted(() => {
           <button 
             :class="{ selected: category === 'points' }" 
             @click="category = 'points'"
+            v-voix="'Sort by Points'"
+            hint="Rank users by total points earned"
           >
             Points
           </button>
           <button 
             :class="{ selected: category === 'streak' }" 
             @click="category = 'streak'"
+            v-voix="'Sort by Streak'"
+            hint="Rank users by consecutive days active"
           >
             Streak
           </button>
           <button 
             :class="{ selected: category === 'challenges' }" 
             @click="category = 'challenges'"
+            v-voix="'Sort by Challenges'"
+            hint="Rank users by number of challenges completed"
           >
             Challenges
           </button>
@@ -237,6 +249,8 @@ onMounted(() => {
             :key="user.id"
             class="table-row"
             :class="{ 'current-user': user.name === userStore.user.name }"
+            v-voix="'Leaderboard Entry: Rank ' + user.rank + ' ' + user.name"
+            hint="Details for user ranked number {{user.rank}}"
           >
             <div class="col-rank">
               <div :class="{ 

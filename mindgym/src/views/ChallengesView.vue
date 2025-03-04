@@ -54,7 +54,12 @@ function clearFilters() {
       <div class="filter-controls">
         <div class="filter-group">
           <label for="type-filter">Challenge Type</label>
-          <select id="type-filter" v-model="filterType">
+          <select 
+            id="type-filter" 
+            v-model="filterType"
+            v-voix="'Filter by Challenge Type'"
+            hint="Select a specific challenge type to filter the list"
+          >
             <option 
               v-for="type in challengeTypes" 
               :key="type.id" 
@@ -67,7 +72,12 @@ function clearFilters() {
         
         <div class="filter-group">
           <label for="difficulty-filter">Difficulty</label>
-          <select id="difficulty-filter" v-model="filterDifficulty">
+          <select 
+            id="difficulty-filter" 
+            v-model="filterDifficulty"
+            v-voix="'Filter by Difficulty Level'"
+            hint="Select a specific difficulty level to filter the list"
+          >
             <option 
               v-for="level in difficultyLevels" 
               :key="level.id" 
@@ -78,8 +88,13 @@ function clearFilters() {
           </select>
         </div>
         
-        <button class="clear-filters-btn" @click="clearFilters" 
-                :disabled="!filterType && !filterDifficulty">
+        <button 
+          class="clear-filters-btn" 
+          @click="clearFilters" 
+          :disabled="!filterType && !filterDifficulty"
+          v-voix="'Clear All Filters'"
+          hint="Reset all filter selections"
+        >
           Clear Filters
         </button>
       </div>
@@ -95,6 +110,8 @@ function clearFilters() {
         :key="challenge.id"
         class="challenge-item"
         @click="navigateToChallenge(challenge.id)"
+        v-voix="'Challenge: ' + challenge.title"
+        hint="Open this challenge to view details and begin"
       >
         <ChallengeCard :challenge="challenge" />
       </div>
@@ -104,7 +121,12 @@ function clearFilters() {
       <div class="no-results-icon">🔍</div>
       <h3>No challenges found</h3>
       <p>Try adjusting your filters to see more results.</p>
-      <button class="clear-filters-btn" @click="clearFilters">Clear All Filters</button>
+      <button 
+        class="clear-filters-btn" 
+        @click="clearFilters"
+        v-voix="'Reset Filters'"
+        hint="Remove all filters to show all challenges"
+      >Clear All Filters</button>
     </div>
   </div>
 </template>

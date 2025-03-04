@@ -73,7 +73,12 @@ onMounted(() => {
     
     <div class="daily-challenge-section">
       <h2 class="section-title">Daily Challenge</h2>
-      <div class="daily-challenge-card" @click="startChallenge(challengesStore.dailyChallenge.id)">
+      <div 
+        class="daily-challenge-card" 
+        @click="startChallenge(challengesStore.dailyChallenge.id)"
+        v-voix="'Start Daily Challenge'"
+        hint="Begin today's recommended mental exercise"
+      >
         <div class="challenge-icon">{{ challengesStore.dailyChallenge.thumbnail }}</div>
         <div class="challenge-content">
           <h3>{{ challengesStore.dailyChallenge.title }}</h3>
@@ -96,7 +101,12 @@ onMounted(() => {
     <div class="recommendations-section">
       <div class="section-header">
         <h2 class="section-title">Recommended for You</h2>
-        <button class="see-all-btn" @click="router.push('/challenges')">See All</button>
+        <button 
+          class="see-all-btn" 
+          @click="router.push('/challenges')"
+          v-voix="'See All Challenges'"
+          hint="View the complete list of available challenges"
+        >See All</button>
       </div>
       
       <div class="challenge-grid">
@@ -105,6 +115,8 @@ onMounted(() => {
           :key="challenge.id"
           class="challenge-item"
           @click="startChallenge(challenge.id)"
+          v-voix="'Start ' + challenge.title + ' Challenge'"
+          hint="Begin this recommended challenge"
         >
           <ChallengeCard :challenge="challenge" />
         </div>
