@@ -1,38 +1,90 @@
-implement the following app: 
-SpeedDate is a fast-paced virtual dating app that connects users through 5-minute video calls. The experience begins with an engaging landing page and smooth onboarding process, followed by an intuitive registration and profile setup. Users access a central dashboard for scheduled dates and notifications, then enter a matchmaking flow with a queue and waiting room before starting a minimalistic, timer-driven video call. After the call, a simple feedback screen captures mutual interest, enabling a seamless transition to further chat and extended interaction if matched. Additional features include activity tracking, personalized insights, and robust settings for privacy and preferences.
+Goal:
+Develop a demo web app that simulates an internal tool for managing daily tasks, schedules, time logs, project collaboration, and performance tracking. All data is mocked, and no authentication is required. This app is intended to demonstrate core features and UI flows for an internal company tool.
 
-Specifics Outline:
+Tech Stack Suggestion:
 
-Landing & Onboarding:
+Frontend: React (with TypeScript optional) combined with a UI component library (e.g., Material-UI or Ant Design) for a clean, responsive interface.
+Backend (Optional): A simple Node.js/Express server (or even static JSON files) to serve mocked data if dynamic API calls are desired.
+Data: Mocked JSON objects (either hardcoded in the frontend or served from a simple endpoint) to simulate tasks, schedules, time logs, project data, and performance metrics.
+Modules & Features
+1. Dashboard
+Purpose: Provide an aggregated view of tasks, schedules, recent time tracking entries, project updates, and key performance indicators.
+Implementation:
+Display summaries such as total tasks for the day, upcoming meetings, recent clock-ins, and performance charts.
+Use card components or panels to visually separate information sections.
+2. Task Management
+Purpose: Allow users to view and simulate creating, updating, and tracking tasks.
+Features to Implement:
+Task List: Display a table or Kanban board with tasks, including details like title, description, deadline, and priority.
+Task Actions: Provide UI buttons to “create,” “edit,” or “delete” tasks. For the demo, these actions can update the local state without persistence.
+Status Indicators: Show task statuses (e.g., Open, In Progress, Completed) with visual cues like color coding.
+Mocked Data: Pre-populate with several tasks to demonstrate filtering and sorting by status, deadline, and priority.
+3. Scheduling
+Purpose: Simulate employee scheduling, including shifts and meetings.
+Features to Implement:
+Calendar View: Integrate a calendar component that displays events such as work shifts, meetings, and deadlines.
+Event Details: Allow clicking on an event to show details (e.g., meeting time, location, description).
+Mocked Data: Include a set of sample events to show different event types and overlapping schedules.
+4. Time Tracking
+Purpose: Simulate logging work hours and generating timesheets.
+Features to Implement:
+Clock In/Out Interface: Create buttons for “Clock In” and “Clock Out” that update a time log in the UI.
+Timesheet Display: Present a list or table summarizing the day’s or week’s time entries (with mocked start/end times and calculated total hours).
+Mocked Data: Pre-fill the timesheet with sample data to illustrate overtime calculation and break tracking.
+5. Project Collaboration
+Purpose: Provide a collaborative workspace for project-related tasks and discussions.
+Features to Implement:
+Project List: Display a list of projects with titles, descriptions, and progress summaries.
+Project Details: On selecting a project, show its associated tasks and a comment/discussion section.
+Mocked Data: Include a couple of projects with associated tasks and static discussion threads to simulate team collaboration.
+6. Performance Tracking
+Purpose: Visualize performance metrics and goal tracking.
+Features to Implement:
+Metrics Dashboard: Create charts or graphs (using a library like Chart.js) to display KPIs such as tasks completed, project milestones reached, or goal progress.
+Goal Lists: Show a list of sample goals with progress indicators (e.g., percentages or progress bars).
+Mocked Data: Populate the dashboard with static performance data to demonstrate potential reporting and analytics features.
+7. Notifications & Automation (Simulated)
+Purpose: Demonstrate how the system would alert users to upcoming deadlines or status changes.
+Features to Implement:
+Notification Panel: A section in the UI where simulated notifications appear (e.g., “Task X due in 1 hour”).
+Automation Simulation: Use timers or local state updates to trigger these notifications on a schedule, purely for demo purposes.
+General Implementation Guidelines
+No Authentication:
+Since this is a demo, omit any login screens or user management. Assume a single “demo user” where all UI elements and actions are available.
 
-Engaging landing page with clear value proposition and visual appeal.
-Introductory tour or explainer video to illustrate the speed dating process.
-Registration & Profile Setup:
+Mock Data Management:
+Store JSON objects (either as static files or within your code) that simulate backend responses for tasks, schedules, time logs, projects, and performance metrics.
 
-Easy sign-up with email or social login options.
-Quick profile creation with photo uploads, bio, interests, and dating preferences.
-Home Dashboard:
+Consider using a state management library like Redux or React’s Context API to manage and update this data within the app.
+UI/UX Considerations:
 
-Central hub displaying upcoming dates, notifications, and quick access to key functions.
-Navigation for Home, Matches, Chats, and Settings.
-Matchmaking Flow:
+Ensure the app is responsive and works on both desktop and mobile browsers.
+Use clear navigation (e.g., a sidebar or top menu) that links to each module: Dashboard, Tasks, Scheduling, Time Tracking, Projects, and Performance.
+Provide user feedback for simulated actions (e.g., snackbars for task updates or notifications).
+Code Organization:
 
-“Start Speed Dating” button to join a match queue.
-Waiting room with a countdown and icebreaker tips.
-Video Call Experience:
+Modular Components: Create separate components for each module (e.g., TaskList, Calendar, TimeLog, ProjectBoard, PerformanceChart).
+Reusable UI Elements: Develop shared components (like buttons, modal dialogs, form fields) to maintain consistency.
+Routing:
+Use a routing library (like React Router) to enable navigation between different views/modules within the app.
 
-Full-screen video interface with a visible countdown timer.
-Minimal controls: mute/unmute, video toggle, and end call button.
-Discreet safety and feedback options during the call.
-Post-Call Interaction:
+Demo Behavior:
+Although the data is mocked, simulate interactivity. For example, when a user “creates” a new task, update the UI state to reflect the change, even though it won’t persist after a refresh.
 
-Feedback screen with simple “Yes/No” options and optional text feedback.
-Seamless transition to chat if mutual interest is confirmed.
-Additional Features:
+Summary
+For your demo app, implement a single-page application that features:
 
-History & Insights section to track past dates and provide analytics.
-Customizable settings for account management, dating preferences, and privacy.
+A Dashboard summarizing key information.
+A Task Management module for viewing and simulating task creation and updates.
+A Scheduling module with a calendar view and event details.
+A Time Tracking module with clock in/out and timesheet display.
+A Project Collaboration section showing project lists, details, and static discussions.
+A Performance Tracking module with visualized metrics.
+A Notifications section to simulate automated alerts.
+All data should be mocked and managed in the client state (or served via a simple backend endpoint if preferred), and there should be no authentication mechanism. The aim is to provide a clear, interactive demonstration of the app’s core functionalities that could later be expanded into a full internal tool.
 
+
+# Important note on accessibility:
 For all inputs and buttons or other control elements that the user can interact with define an id. You can add that id to the html element by declaring the v-voix="'id'" attribute. the id should be clear on what the element does. For example, a button to submit a contact form should be called something like "Submit Contact Form". Additionally, you may write the hint="some description" attribute on those html elements to give more information about usage, order of usage in comparison to other elements, and so on. Keep this a short if you need it. Additionally, review the router routes. add a meta route-description to any router to describe what it is for. For example:
 {
    "path":"/",
