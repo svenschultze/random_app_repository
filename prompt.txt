@@ -1,171 +1,207 @@
 Develop a demo web app:
 
-## Overview
-
-**MyRecipeBook Demo** is a single-page application (SPA) that simulates a recipe-sharing platform with multiple router pages. It features a client-side search function and a markdown text field for entering and displaying recipe instructions. All data interactions are simulated using static JSON or in-memory objects, with no backend or persistent storage.
-
-You can find a detailed UI/UX concept in the concept.md file.
----
-
-## Key Pages and Features
-
-### 1. Home Page (`/`)
-- **Purpose:**  
-  Introduce users to the app and direct them to key features.
-- **Features:**  
-  - **Featured Recipes:**  
-    Display a carousel or grid showcasing a few highlighted recipes from the mocked dataset.
-  - **Introduction Section:**  
-    A brief narrative outlining the app’s mission.
-  - **Navigation Links:**  
-    Prominent links to “Recipes,” “Add Recipe,” “About,” and “Contact” pages.
-- **Mock Data:**  
-  Use a subset of recipes as featured items.
+## Overview of Survey Architect
+You can find a detailed UI/UX concept in the concept.md file. Read it carefully before starting the development.
+Below is a top–down comprehensive development guide that outlines the design, architecture, and steps to implement the Vue.js 3 frontend-only survey editor with standalone HTML export—without any code implementations.
 
 ---
 
-### 2. Recipes List Page (`/recipes`)
-- **Purpose:**  
-  Allow users to browse, filter, and search through available recipes.
-- **Features:**  
-  - **Recipe Grid/List:**  
-    Display recipes with a thumbnail, title, and short description.
-  - **Search Functionality:**  
-    - **Search Bar:**  
-      An input field where users can type keywords (e.g., recipe titles, ingredients) to filter the list.
-    - **Debounce Logic:**  
-      Implement debounce on the search input to optimize performance during typing.
-    - **Client-Side Filtering:**  
-      Dynamically filter the mocked recipe dataset based on the search query.
-  - **Filtering & Sorting Options:**  
-    Additional options for filtering by cuisine or dietary preferences and sorting by criteria like “newest” or “most popular.”
-- **Mock Data:**  
-  Use a static array of recipe objects with fields such as `id`, `title`, `description`, `ingredients`, `instructions` (in markdown), `imageURL`, etc.
+# Comprehensive Development Guide for a Vue.js 3 Frontend-Only Survey Editor
+
+This guide provides a high-level overview for building a single-page application (SPA) survey editor that allows users to design scientific surveys with diverse question types, branching logic, and internationalization. The editor then exports a self-contained HTML file that embeds a Vue instance to render the survey form.
 
 ---
 
-### 3. Recipe Detail Page (`/recipes/:id`)
-- **Purpose:**  
-  Display complete details for a selected recipe.
-- **Features:**  
-  - **Recipe Information:**  
-    Show the recipe title, high-quality image, ingredients list, cooking time, nutritional info, and instructions.
-  - **Markdown Rendering:**  
-    Render the recipe instructions by converting the stored markdown text into HTML. This can be done using a lightweight markdown parser or a simple conversion function.
-  - **Comments/Reviews:**  
-    A static list of mocked comments and ratings to simulate community interaction.
-  - **Action Buttons:**  
-    Buttons for “Favorite” or “Save” to simulate user interactions (state changes only).
-- **Mock Data:**  
-  Load recipe details from the mocked dataset; comments and ratings are hard-coded arrays tied to each recipe.
+## 1. Project Overview
+
+- **Objective:**  
+  Create a frontend-only survey editor that enables researchers to visually design and configure surveys, then export a fully functional standalone HTML file containing a Vue instance with the survey form.
+
+- **Key Features:**
+  - **Interactive Editor:** A drag-and-drop interface for survey creation.
+  - **Question Types:** Support for multiple choice, Likert scales, open text, matrix questions, file uploads, ranking, dropdowns, etc.
+  - **Branching Logic:** Ability to define conditional flows (skip logic/adaptive questioning).
+  - **Randomization:** Options to randomize question and answer order.
+  - **Internationalization (i18n):** Built-in tools for managing translations and enabling dynamic language switching.
+  - **Live Preview:** Real-time display of the designed survey.
+  - **Export Functionality:** Generate a standalone HTML file that includes the survey configuration, embedded Vue instance, and necessary styling, working offline without a backend.
 
 ---
 
-### 4. Add Recipe Page (`/add`)
-- **Purpose:**  
-  Let users submit new recipes using a guided form.
-- **Features:**  
-  - **Form Fields:**  
-    Include inputs for:
-    - **Title**
-    - **Ingredients:** A multi-line text area.
-    - **Instructions (Markdown):**  
-      A plain textarea where users can enter instructions using markdown syntax (e.g., for bold, italics, lists).
-    - **Cuisine Tags:** Dropdown or multi-select options.
-    - **Image Upload:** Simulated file input (no actual upload).
-  - **Markdown Usage:**  
-    - **Input:** Store the markdown text as-is in the mocked data.
-    - **Preview (Optional):** Provide a simple preview that converts the markdown into HTML so users can see their formatted content before submission.
-  - **Form Validation:**  
-    Ensure required fields are filled out and display inline error messages if needed.
-  - **Submission Handling:**  
-    On submission, update the local state with the new recipe and optionally display a success message or redirect to the Recipes List page.
-- **Mock Data:**  
-  Newly added recipes are appended to the in-memory data, persisting only for the session.
+## 2. Technology Stack & Dependencies
+
+- **Frontend Framework:** Vue.js 3 (utilizing the Composition API)
+- **Build Tool:** Vite (recommended) or Vue CLI for project scaffolding and hot reloading
+- **State Management:** Vue’s built–in reactivity or Vuex if needed for complex state management
+- **Internationalization:** vue-i18n to handle translations and locale switching
+- **Drag-and-Drop Library:** A library like Vue.Draggable to enable drag–and–drop functionality in the editor
+- **CSS Framework (Optional):** Tailwind CSS or BootstrapVue for responsive design and styling
+- **Export Mechanism:** Browser APIs (e.g., Blob API) for generating and downloading a standalone HTML file
 
 ---
 
-### 5. About Page (`/about`)
-- **Purpose:**  
-  Explain the app’s mission, inspiration, and future directions.
-- **Features:**  
-  - **Static Content:**  
-    Hard-coded narrative about the project and the team behind it.
-  - **Testimonials/Stories:**  
-    Optionally include a few static testimonials or success stories.
-- **Mock Data:**  
-  All content is embedded directly in the component.
+## 3. Project Structure Overview
+
+A suggested project structure:
+
+```
+survey-editor/
+├── public/
+│   └── index.html          # Entry point for the survey editor application
+├── src/
+│   ├── assets/             # Assets like images, fonts, etc.
+│   ├── components/         # Vue components for editor UI, preview, and individual question types
+│   │   ├── Editor.vue      # Main editor component
+│   │   ├── Preview.vue     # Live preview component for the survey form
+│   │   ├── QuestionTypes/  # Folder for each specific question type component (MultipleChoice.vue, Likert.vue, etc.)
+│   │   └── QuestionWrapper.vue  # Dynamic component loader based on question type
+│   ├── i18n/               # Internationalization files (e.g., en.json, es.json)
+│   ├── utils/              # Utility functions (e.g., for exporting HTML)
+│   ├── App.vue             # Root component integrating Editor and Preview
+│   └── main.js             # Application bootstrap file that initializes Vue and plugins
+├── package.json
+└── vite.config.js          # Build configuration (if using Vite)
+```
 
 ---
 
-### 6. Contact Page (`/contact`)
-- **Purpose:**  
-  Provide a way for users to send feedback or inquiries.
-- **Features:**  
-  - **Contact Form:**  
-    Fields for name, email, and message.
-  - **Submission Feedback:**  
-    Simulate form submission by displaying a “Thank you for your feedback” message without backend processing.
-  - **FAQ/Info Section:**  
-    Optionally include additional contact details or a small FAQ.
-- **Mock Data:**  
-  All messaging functionality is simulated on the client side.
+## 4. High-Level Implementation Plan
+
+### 4.1. Editor Interface
+
+- **UI Layout:**  
+  - A toolbar for adding and configuring survey questions.
+  - A sidebar for survey settings (branching logic, translation management, randomization options).
+  - A main canvas where survey elements are visually arranged and managed using drag–and–drop.
+  - Integration of a live preview pane to show the current survey appearance.
+
+- **Component Structure:**  
+  - **Editor Component:** Manages overall survey configuration and user interactions.
+  - **Dynamic Question Wrapper:** Loads specific question components based on type.
+  - **Question Components:** Individual components for each survey question type, designed as reusable Vue components.
+
+### 4.2. Internationalization
+
+- **Integration with vue-i18n:**  
+  - Set up a translation system to support multiple languages.
+  - Provide a UI for survey creators to enter and manage translations for all survey text (questions, options, instructions).
+  - Ensure the exported survey includes language switching functionality.
+
+### 4.3. Branching Logic & Randomization
+
+- **Branching Logic:**  
+  - Allow survey creators to define conditional rules (e.g., “if Q1 answer is ‘No’, then skip to Q3”).
+  - Store branching conditions as part of the survey configuration.
+  - The exported survey will evaluate these conditions dynamically as respondents answer questions.
+
+- **Randomization:**  
+  - Provide settings to randomize the order of questions and/or answer options.
+  - Use a shuffle algorithm at runtime in the exported form to implement this feature.
+
+### 4.4. Live Preview
+
+- **Preview Component:**  
+  - Render a read–only version of the survey based on the current configuration.
+  - Ensure the preview reflects all settings including branching logic, randomization, and translations.
+  - Allow survey designers to interactively see changes in real time.
+
+### 4.5. Exporting the Standalone HTML File
+
+- **Export Workflow:**  
+  1. **Compile Configuration:** Gather the complete survey configuration (questions, logic, translations, styling) from the editor.
+  2. **Generate HTML Template:** Create an HTML document template that includes:
+     - Required `<head>` elements and styles.
+     - A mounting element (e.g., `<div id="app"></div>`).
+     - Embedded scripts that load Vue.js (from a CDN) and contain the survey-rendering logic.
+     - An inline block (or script tag) with the JSON configuration.
+  3. **Embed Survey Code:** The exported file must instantiate a Vue app on load to render the survey, applying the branching logic and internationalization.
+  4. **Download Mechanism:** Use browser APIs (e.g., Blob API) to create and trigger a download of the generated HTML file.
 
 ---
 
-## Developer Implementation Guidelines
+## 5. Detailed Development Steps
 
-1. **Routing & Navigation:**  
-   - Use a routing library (e.g., React Router) to map the routes (`/`, `/recipes`, `/recipes/:id`, `/add`, `/about`, `/contact`).
-   - Implement a persistent navigation bar or sidebar for seamless page transitions.
+### Step 1: Project Setup
 
-2. **State Management & Mocked Data:**  
-   - Store all recipe and comment data in a static JSON file or as in-memory JavaScript objects.
-   - Use local state or context providers to manage dynamic interactions such as adding new recipes or filtering the list.
-   - Simulate asynchronous behavior with `setTimeout` if desired.
+- **Initialize the project** using Vite or Vue CLI.
+- **Install Dependencies:** Vue.js 3, vue-i18n, Vue.Draggable (or a similar drag-and-drop library), and optional CSS framework.
+- **Set up project structure** as outlined above.
 
-3. **Markdown Text Field for Recipe Instructions:**  
-   - **Input Field:**  
-     Use a plain textarea in the “Add Recipe” form where users can type in markdown syntax.
-   - **Storage:**  
-     Store the markdown text as part of the recipe object.
-   - **Rendering:**  
-     In the Recipe Detail page, convert the markdown to HTML using a simple parser or a custom conversion function. This allows formatted text (e.g., headings, lists, bold/italic text) to be displayed properly without needing an external rich text component.
-   - **Optional Preview:**  
-     Implement a basic preview feature that shows the rendered HTML before submission.
+### Step 2: Develop the Editor Interface
 
-4. **Search Functionality:**  
-   - **Search Bar:**  
-     Add an input field on the Recipes List page for entering search keywords.
-   - **Client-Side Filtering:**  
-     Use JavaScript to filter the displayed recipes based on matches in the title, ingredients, or description.
-   - **Debouncing:**  
-     Implement debounce logic to delay filtering until the user stops typing, improving performance.
-   - **Feedback:**  
-     Show a “No results found” message if no recipes match the search query.
+- **Design the UI layout:**  
+  Define the editor’s layout with sections for the toolbar, sidebar, canvas, and live preview.
+- **Create Components:**  
+  Build the main Editor component, dynamic QuestionWrapper component, and individual question type components.
+- **Implement drag-and-drop:**  
+  Integrate the drag–and–drop functionality to allow reordering of questions on the canvas.
+- **Integrate state management:**  
+  Use Vue’s reactivity (or Vuex) to manage the survey’s configuration as questions are added, edited, or removed.
 
-5. **Component Structure:**  
-   - **Pages:** Create individual components for Home, Recipes List, Recipe Detail, Add Recipe, About, and Contact.
-   - **Reusable Components:**  
-     Develop shared components (e.g., RecipeCard, NavigationBar, FormInput) to ensure consistency.
-   - **Error Handling:**  
-     Incorporate basic error handling for form validations and display user-friendly error messages.
+### Step 3: Implement Internationalization
 
-6. **Styling & Responsiveness:**  
-   - Use CSS frameworks (such as Bootstrap or Tailwind CSS) or custom CSS to ensure a responsive design.
-   - Maintain consistent styling and layout across all pages, including for the markdown preview and rendered content.
+- **Set up vue-i18n:**  
+  Configure the plugin in the main application.
+- **Create translation files:**  
+  Prepare JSON files for each supported language.
+- **Translation management UI:**  
+  Build an interface that allows survey designers to input and edit translations for each text element.
 
-7. **Testing & Demo Readiness:**  
-   - Test navigation between pages, search functionality, markdown conversion, and form validations.
-   - Ensure all dynamic actions update the UI state correctly.
-   - Provide a mechanism to reset the demo state (e.g., refreshing the page reloads the original mocked data).
+### Step 4: Add Branching Logic & Randomization Features
 
----
+- **Extend survey data model:**  
+  Include properties in each question object to store conditional logic and randomization settings.
+- **Develop a rules editor:**  
+  Create UI elements in the sidebar for setting up branching conditions.
+- **Plan runtime evaluation:**  
+  Define how the exported survey will process the branching logic dynamically as respondents interact with the form.
+- **Implement randomization controls:**  
+  Provide toggles or options to enable/disable randomization at the question or survey level.
 
-By following this updated summary, developers can implement a demo version of MyRecipeBook that showcases all core features—including a simple markdown text field for recipe instructions and a robust client-side search—without relying on external rich text components. This setup effectively demonstrates the full scope of the concept using only mocked data and no authentication system.
+### Step 5: Build the Live Preview
+
+- **Implement the Preview component:**  
+  Use the same question components to render a live, read–only view of the survey.
+- **Ensure synchronization:**  
+  Update the preview in real time as the survey configuration changes in the editor.
+
+### Step 6: Create the Export Mechanism
+
+- **Design an export utility:**  
+  Define the process for generating the standalone HTML file:
+  - Create an HTML template that includes:
+    - A `<head>` section with necessary meta tags and styles.
+    - A `<body>` with a mount point for Vue.
+    - Script tags to load Vue from a CDN.
+    - An inline block that embeds the survey configuration as JSON.
+    - Survey rendering logic that instantiates a new Vue instance.
+- **Implement file generation:**  
+  Use browser APIs to compile the HTML template with the current survey configuration.
+- **Trigger file download:**  
+  Implement functionality to generate a downloadable HTML file when the user clicks the export button.
+
+### Step 7: Testing & Quality Assurance
+
+- **Unit Testing:**  
+  Write tests for key components (e.g., question types, translation editor, branching logic).
+- **Integration Testing:**  
+  Verify the editor’s workflow from survey design to export.
+- **Cross-Browser Testing:**  
+  Ensure that the exported HTML file works correctly in all major browsers.
+- **Accessibility Testing:**  
+  Check that the survey form and editor UI meet accessibility standards.
+
+### Step 8: Documentation & Deployment
+
+- **Document the Codebase:**  
+  Write clear documentation covering installation, component usage, and how to extend features.
+- **Prepare for Deployment:**  
+  Configure production builds using your chosen build tool.
+- **Future Enhancements:**  
+  Consider features such as saving drafts to local storage, additional export formats (e.g., JSON configuration), and advanced analytics integration.
 
 # Important note on accessibility:
-For all inputs and buttons or other control elements that the user can interact with define an id. You can add that id to the html element by declaring the v-voix="'id'" attribute. the id should be clear on what the element does. For example, a button to submit a contact form should be called something like "Submit Contact Form". Additionally, you may write the hint="some description" attribute on those html elements to give more information about usage, order of usage in comparison to other elements, and so on. Keep this a short if you need it. Additionally, review the router routes. add a meta route-description to any router to describe what it is for. For example:
+For all inputs and buttons or other control elements that the user can interact with define an id. You can add that id to the html element by declaring the v-voix="'id'" attribute. the id should be clear on what the element does. For example, a button to submit a contact form should be called something like "Submit Contact Form". Additionally, you may write the hint="some description" attribute on those html elements to give more information about usage, order of usage in comparison to other elements, and so on. Keep this a short text and only use if required for understanding. The id should be descriptive on its own. Additionally, review the router routes. add a meta route-description to any router to describe what it is for. For example:
 {
    "path":"/",
    "name":"home",
