@@ -217,7 +217,7 @@ const uniqueCategories = computed(() => {
   <div class="transactions-container">
     <header class="section-header">
       <h2>Transactions</h2>
-      <button @click="toggleAddForm" class="btn btn-primary">
+      <button @click="toggleAddForm" class="btn btn-primary" v-voix="'ToggleTransactionForm'" hint="Toggle form to add a new transaction">
         {{ showAddForm ? 'Cancel' : 'Add New Transaction' }}
       </button>
     </header>
@@ -233,6 +233,8 @@ const uniqueCategories = computed(() => {
             type="date" 
             v-model="newTransaction.date"
             class="form-input"
+            v-voix="'TransactionDateInput'"
+            hint="Select the date when this transaction occurred"
           >
         </div>
         
@@ -243,6 +245,8 @@ const uniqueCategories = computed(() => {
               @click="newTransaction.type = 'expense'"
               :class="{ active: newTransaction.type === 'expense' }"
               class="segment"
+              v-voix="'ExpenseTypeButton'"
+              hint="Select expense transaction type for money spent"
             >
               Expense
             </button>
@@ -250,6 +254,8 @@ const uniqueCategories = computed(() => {
               @click="newTransaction.type = 'income'"
               :class="{ active: newTransaction.type === 'income' }"
               class="segment"
+              v-voix="'IncomeTypeButton'"
+              hint="Select income transaction type for money received"
             >
               Income
             </button>
@@ -264,6 +270,8 @@ const uniqueCategories = computed(() => {
             v-model="newTransaction.description"
             placeholder="e.g. Grocery shopping"
             class="form-input"
+            v-voix="'TransactionDescriptionInput'"
+            hint="Enter a short description of what this transaction was for"
           >
         </div>
         
@@ -277,6 +285,8 @@ const uniqueCategories = computed(() => {
             step="0.01"
             min="0"
             class="form-input"
+            v-voix="'TransactionAmountInput'"
+            hint="Enter the transaction amount in your currency"
           >
         </div>
         
@@ -286,6 +296,8 @@ const uniqueCategories = computed(() => {
             id="transaction-category" 
             v-model="newTransaction.category"
             class="form-select"
+            v-voix="'TransactionCategorySelect'"
+            hint="Select a category for this transaction"
           >
             <option value="" disabled>Select category</option>
             <option 
@@ -305,13 +317,15 @@ const uniqueCategories = computed(() => {
             v-model="newTransaction.notes"
             placeholder="Any additional details"
             class="form-textarea"
+            v-voix="'TransactionNotesInput'" 
+            hint="Optional notes about this transaction"
           ></textarea>
         </div>
       </div>
       
       <div class="form-actions">
-        <button @click="resetForm" class="btn btn-secondary">Cancel</button>
-        <button @click="addTransaction" class="btn btn-primary">Save Transaction</button>
+        <button @click="resetForm" class="btn btn-secondary" v-voix="'CancelTransactionButton'" hint="Cancel creating this transaction">Cancel</button>
+        <button @click="addTransaction" class="btn btn-primary" v-voix="'SaveTransactionButton'" hint="Save this transaction to your records">Save Transaction</button>
       </div>
     </div>
     
@@ -352,6 +366,8 @@ const uniqueCategories = computed(() => {
           id="category-filter" 
           v-model="filterCategory"
           class="filter-select"
+          v-voix="'CategoryFilterSelect'"
+          hint="Filter transactions by category"
         >
           <option 
             v-for="category in uniqueCategories" 
@@ -371,6 +387,8 @@ const uniqueCategories = computed(() => {
           v-model="searchQuery"
           placeholder="Search transactions..."
           class="filter-input"
+          v-voix="'TransactionSearchInput'"
+          hint="Search for transactions by description or other details"
         >
       </div>
     </div>
@@ -380,25 +398,25 @@ const uniqueCategories = computed(() => {
       <table class="transactions-table">
         <thead>
           <tr>
-            <th @click="toggleSort('date')" class="sortable">
+            <th @click="toggleSort('date')" class="sortable" v-voix="'SortByDate'" hint="Sort transactions by date">
               Date
               <span v-if="sortBy === 'date'" class="sort-indicator">
                 {{ sortDirection === 'asc' ? '▲' : '▼' }}
               </span>
             </th>
-            <th @click="toggleSort('description')" class="sortable">
+            <th @click="toggleSort('description')" class="sortable" v-voix="'SortByDescription'" hint="Sort transactions by description">
               Description
               <span v-if="sortBy === 'description'" class="sort-indicator">
                 {{ sortDirection === 'asc' ? '▲' : '▼' }}
               </span>
             </th>
-            <th @click="toggleSort('category')" class="sortable">
+            <th @click="toggleSort('category')" class="sortable" v-voix="'SortByCategory'" hint="Sort transactions by category">
               Category
               <span v-if="sortBy === 'category'" class="sort-indicator">
                 {{ sortDirection === 'asc' ? '▲' : '▼' }}
               </span>
             </th>
-            <th @click="toggleSort('amount')" class="sortable">
+            <th @click="toggleSort('amount')" class="sortable" v-voix="'SortByAmount'" hint="Sort transactions by amount">
               Amount
               <span v-if="sortBy === 'amount'" class="sort-indicator">
                 {{ sortDirection === 'asc' ? '▲' : '▼' }}
@@ -428,7 +446,7 @@ const uniqueCategories = computed(() => {
               {{ formatCurrency(transaction.amount) }}
             </td>
             <td>
-              <button @click="deleteTransaction(transaction.id)" class="btn-icon delete-btn">
+              <button @click="deleteTransaction(transaction.id)" class="btn-icon delete-btn" v-voix="'DeleteTransaction'" hint="Delete this transaction">
                 ×
               </button>
             </td>

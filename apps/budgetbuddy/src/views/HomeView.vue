@@ -126,7 +126,7 @@ const percentSpent = computed(() => {
           </div>
         </div>
         <div class="card-footer">
-          <RouterLink to="/budgets" class="card-link">View all budgets</RouterLink>
+          <RouterLink to="/budgets" class="card-link" v-voix="'ViewAllBudgets'" hint="Navigate to budgets page to see all budget categories">View all budgets</RouterLink>
         </div>
       </div>
       
@@ -157,7 +157,7 @@ const percentSpent = computed(() => {
           </div>
         </div>
         <div class="card-footer">
-          <RouterLink to="/transactions" class="card-link">View all transactions</RouterLink>
+          <RouterLink to="/transactions" class="card-link" v-voix="'ViewAllTransactions'" hint="Navigate to transactions page to see all financial transactions">View all transactions</RouterLink>
         </div>
       </div>
       
@@ -194,7 +194,7 @@ const percentSpent = computed(() => {
           </div>
         </div>
         <div class="card-footer">
-          <RouterLink to="/budgets" class="card-link">Manage budgets</RouterLink>
+          <RouterLink to="/budgets" class="card-link" v-voix="'ManageBudgets'" hint="Navigate to budgets page to manage your budget allocations">Manage budgets</RouterLink>
         </div>
       </div>
       
@@ -202,19 +202,19 @@ const percentSpent = computed(() => {
       <div class="dashboard-card quick-actions">
         <h3 class="card-title">Quick Actions</h3>
         <div class="actions-grid">
-          <RouterLink to="/transactions?new=true" class="action-button">
+          <RouterLink to="/transactions?new=true" class="action-button" v-voix="'AddTransaction'" hint="Create a new financial transaction">
             <span class="action-icon">+</span>
             <span class="action-label">Add Transaction</span>
           </RouterLink>
-          <RouterLink to="/budgets?new=true" class="action-button">
+          <RouterLink to="/budgets?new=true" class="action-button" v-voix="'CreateNewBudget'" hint="Create a new budget category">
             <span class="action-icon">📊</span>
             <span class="action-label">New Budget</span>
           </RouterLink>
-          <RouterLink to="/savings?new=true" class="action-button">
+          <RouterLink to="/savings?new=true" class="action-button" v-voix="'SetSavingsGoal'" hint="Set up a new savings goal">
             <span class="action-icon">💰</span>
             <span class="action-label">Set Savings Goal</span>
           </RouterLink>
-          <RouterLink to="/analytics" class="action-button">
+          <RouterLink to="/analytics" class="action-button" v-voix="'ViewReports'" hint="View financial reports and analytics">
             <span class="action-icon">📈</span>
             <span class="action-label">View Reports</span>
           </RouterLink>

@@ -101,12 +101,14 @@ const skipOnboarding = () => {
             v-model="formData.name" 
             placeholder="Enter your name"
             class="form-input"
+            v-voix="'NameInput'" 
+            hint="Enter your name for personalized experience"
           >
         </div>
         
         <div class="form-group">
           <label for="currency">Select your currency</label>
-          <select id="currency" v-model="formData.currency" class="form-select">
+          <select id="currency" v-model="formData.currency" class="form-select" v-voix="'CurrencySelector'" hint="Choose your preferred currency for financial tracking">
             <option value="USD">US Dollar ($)</option>
             <option value="EUR">Euro (€)</option>
             <option value="GBP">British Pound (£)</option>
@@ -123,6 +125,8 @@ const skipOnboarding = () => {
             v-model="formData.monthlyIncome" 
             placeholder="Enter amount"
             class="form-input"
+            v-voix="'MonthlyIncomeInput'" 
+            hint="Enter your monthly income amount for budget calculations"
           >
         </div>
       </div>
@@ -139,6 +143,8 @@ const skipOnboarding = () => {
             class="category-item"
             :class="{ 'selected': isCategorySelected(category.id) }"
             @click="toggleCategory(category)"
+            v-voix="'CategoryToggle_' + category.name"
+            hint="Select or deselect this budget category"
           >
             <span class="category-name">{{ category.name }}</span>
             <span v-if="isCategorySelected(category.id)" class="check-icon">✓</span>
@@ -189,6 +195,8 @@ const skipOnboarding = () => {
           v-if="currentStep > 1" 
           @click="prevStep" 
           class="btn btn-secondary"
+          v-voix="'PreviousStep'"
+          hint="Go back to the previous step"
         >
           Back
         </button>
@@ -196,13 +204,15 @@ const skipOnboarding = () => {
         <button 
           @click="nextStep" 
           class="btn btn-primary"
+          v-voix="'NextStep'"
+          hint="Continue to the next step or complete setup"
         >
           {{ currentStep < totalSteps ? 'Next' : 'Complete' }}
         </button>
       </div>
       
       <div v-if="currentStep === 1" class="skip-link">
-        <a href="#" @click.prevent="skipOnboarding">Skip setup</a>
+        <a href="#" @click.prevent="skipOnboarding" v-voix="'SkipSetup'" hint="Skip the setup process and go to dashboard">Skip setup</a>
       </div>
     </div>
   </div>

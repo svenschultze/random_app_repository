@@ -141,6 +141,8 @@ const setActiveSection = (section) => {
             @click="setActiveSection('personal')" 
             class="nav-item" 
             :class="{ 'active': activeSection === 'personal' }"
+            v-voix="'PersonalInfoTab'"
+            hint="Navigate to personal information settings"
           >
             Personal Information
           </button>
@@ -148,6 +150,8 @@ const setActiveSection = (section) => {
             @click="setActiveSection('preferences')" 
             class="nav-item" 
             :class="{ 'active': activeSection === 'preferences' }"
+            v-voix="'PreferencesTab'"
+            hint="Navigate to app preferences settings"
           >
             Preferences
           </button>
@@ -155,6 +159,8 @@ const setActiveSection = (section) => {
             @click="setActiveSection('data')" 
             class="nav-item" 
             :class="{ 'active': activeSection === 'data' }"
+            v-voix="'DataPrivacyTab'"
+            hint="Navigate to data and privacy settings"
           >
             Data & Privacy
           </button>
@@ -175,6 +181,8 @@ const setActiveSection = (section) => {
               v-model="userData.name"
               placeholder="Enter your name"
               class="form-input"
+              v-voix="'ProfileNameInput'"
+              hint="Enter your name for personalization"
             >
           </div>
           
@@ -188,6 +196,8 @@ const setActiveSection = (section) => {
               step="0.01"
               min="0"
               class="form-input"
+              v-voix="'ProfileIncomeInput'"
+              hint="Enter your monthly income amount"
             >
           </div>
           
@@ -197,6 +207,8 @@ const setActiveSection = (section) => {
               id="currency" 
               v-model="userData.currency"
               class="form-select"
+              v-voix="'ProfileCurrencySelect'"
+              hint="Select your preferred currency for financial tracking"
             >
               <option 
                 v-for="currency in currencies" 
@@ -214,6 +226,8 @@ const setActiveSection = (section) => {
               id="language" 
               v-model="userData.language"
               class="form-select"
+              v-voix="'ProfileLanguageSelect'"
+              hint="Select your preferred language for the application"
             >
               <option 
                 v-for="language in languages" 
@@ -226,7 +240,7 @@ const setActiveSection = (section) => {
           </div>
           
           <div class="form-actions">
-            <button @click="saveUserData" class="btn btn-primary">Save Changes</button>
+            <button @click="saveUserData" class="btn btn-primary" v-voix="'SavePersonalInfo'" hint="Save your personal information changes">Save Changes</button>
           </div>
         </section>
         
@@ -240,6 +254,8 @@ const setActiveSection = (section) => {
               id="theme" 
               v-model="userData.theme"
               class="form-select"
+              v-voix="'ThemeSelect'"
+              hint="Select your preferred visual theme for the application"
             >
               <option 
                 v-for="theme in themes" 
@@ -257,6 +273,8 @@ const setActiveSection = (section) => {
               id="export-format" 
               v-model="userData.exportFormat"
               class="form-select"
+              v-voix="'ExportFormatSelect'"
+              hint="Select your preferred file format for data exports"
             >
               <option 
                 v-for="format in exportFormats" 
@@ -274,13 +292,15 @@ const setActiveSection = (section) => {
               <input 
                 type="checkbox" 
                 v-model="userData.notifications"
+                v-voix="'NotificationsToggle'"
+                hint="Toggle to enable or disable application notifications"
               >
               <span class="toggle-slider"></span>
             </label>
           </div>
           
           <div class="form-actions">
-            <button @click="saveUserData" class="btn btn-primary">Save Preferences</button>
+            <button @click="saveUserData" class="btn btn-primary" v-voix="'SavePreferences'" hint="Save your application preferences">Save Preferences</button>
           </div>
         </section>
         
@@ -295,6 +315,8 @@ const setActiveSection = (section) => {
               @click="exportAllData" 
               class="btn btn-primary"
               :disabled="isLoading"
+              v-voix="'ExportDataButton'"
+              hint="Download all your application data as a file"
             >
               <span v-if="isLoading">Exporting...</span>
               <span v-else>Export Data</span>
@@ -304,7 +326,7 @@ const setActiveSection = (section) => {
           <div class="card data-card danger-zone">
             <h4>Reset Application</h4>
             <p>This will clear all your data, including transactions, budgets, and settings. This action cannot be undone.</p>
-            <button @click="resetUserData" class="btn btn-danger">Reset All Data</button>
+            <button @click="resetUserData" class="btn btn-danger" v-voix="'ResetDataButton'" hint="Delete all your application data and reset to defaults">Reset All Data</button>
           </div>
           
           <div class="card data-card">

@@ -11,12 +11,12 @@ import { RouterLink, RouterView } from 'vue-router'
       </div>
       
       <nav class="main-nav">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/transactions">Transactions</RouterLink>
-        <RouterLink to="/budgets">Budgets</RouterLink>
-        <RouterLink to="/savings">Savings</RouterLink>
-        <RouterLink to="/analytics">Analytics</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink to="/" v-voix="'NavigateHome'" hint="Return to dashboard">Home</RouterLink>
+        <RouterLink to="/transactions" v-voix="'NavigateTransactions'" hint="View and manage transactions">Transactions</RouterLink>
+        <RouterLink to="/budgets" v-voix="'NavigateBudgets'" hint="View and manage budget categories">Budgets</RouterLink>
+        <RouterLink to="/savings" v-voix="'NavigateSavings'" hint="View and manage savings goals">Savings</RouterLink>
+        <RouterLink to="/analytics" v-voix="'NavigateAnalytics'" hint="View financial reports">Analytics</RouterLink>
+        <RouterLink to="/profile" v-voix="'NavigateProfile'" hint="Manage your account settings">Profile</RouterLink>
       </nav>
     </header>
 
@@ -86,7 +86,6 @@ import { RouterLink, RouterView } from 'vue-router'
 .app-content {
   flex: 1;
   padding: 2rem 1rem;
-  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
 }

@@ -27,4 +27,8 @@ app.config.globalProperties.$filters = {
   }
 }
 
+// Setup voix for accessibility
+import { useVoix } from "vue-voix"
+app.use(useVoix())
+
 app.mount('#app')
