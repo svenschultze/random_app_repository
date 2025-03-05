@@ -4,15 +4,78 @@ import { useRoute, useRouter } from 'vue-router'
 import { useListingsStore } from '@/stores/listings'
 import { useFavoritesStore } from '@/stores/favorites'
 import { useAuthStore } from '@/stores/auth'
-import { useToast } from 'primevue/usetoast'
+// Import Leaflet fully first
+import L from 'leaflet'
 import { LMap, LTileLayer, LMarker, LIcon } from '@vue-leaflet/vue-leaflet'
+
+// Fix icon issue with Leaflet
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href
+})
+
+// Custom toast implementation
+function showToast(message, type = 'info', duration = 3000) {
+  const toast = document.createElement('div')
+  toast.className = `toast toast-${type}`
+  toast.setAttribute('role', 'alert')
+  
+  const iconMap = {
+    success: 'pi pi-check-circle',
+    error: 'pi pi-times-circle',
+    warning: 'pi pi-exclamation-triangle',
+    info: 'pi pi-info-circle'
+  }
+  
+  toast.innerHTML = `
+    <div class="toast-icon">
+      <i class="${iconMap[type] || iconMap.info}"></i>
+    </div>
+    <div class="toast-content">
+      <p>${message}</p>
+    </div>
+    <button class="toast-close" aria-label="Close notification">
+      <i class="pi pi-times"></i>
+    </button>
+  `
+  
+  const container = document.getElementById('toast-container')
+  if (container) {
+    container.appendChild(toast)
+    
+    // Auto remove after duration
+    setTimeout(() => {
+      toast.classList.add('toast-hiding')
+      setTimeout(() => {
+        if (container.contains(toast)) {
+          container.removeChild(toast)
+        }
+      }, 300)
+    }, duration)
+    
+    // Close button
+    const closeBtn = toast.querySelector('.toast-close')
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        toast.classList.add('toast-hiding')
+        setTimeout(() => {
+          if (container.contains(toast)) {
+            container.removeChild(toast)
+          }
+        }, 300)
+      })
+    }
+  }
+}
 
 const route = useRoute()
 const router = useRouter()
 const listingsStore = useListingsStore()
 const favoritesStore = useFavoritesStore()
 const authStore = useAuthStore()
-const toast = useToast()
+// Using custom toast implementation
 
 // Get listing ID from route
 const listingId = route.params.id
@@ -76,12 +139,7 @@ async function fetchListing() {
 // Toggle favorite
 async function toggleFavorite() {
   if (!isAuthenticated.value) {
-    toast.add({
-      severity: 'info',
-      summary: 'Authentication Required',
-      detail: 'Please sign in to save favorites',
-      life: 3000
-    })
+    showToast('Please sign in to save favorites', 'info')
     router.push({ name: 'login', query: { redirect: route.fullPath } })
     return
   }
@@ -89,29 +147,14 @@ async function toggleFavorite() {
   try {
     if (isFavorite.value) {
       await favoritesStore.removeFavorite(listingId)
-      toast.add({
-        severity: 'success',
-        summary: 'Removed from Favorites',
-        detail: 'Property has been removed from your favorites',
-        life: 3000
-      })
+      showToast('Property has been removed from your favorites', 'success')
     } else {
       await favoritesStore.addFavorite(listingId)
-      toast.add({
-        severity: 'success',
-        summary: 'Added to Favorites',
-        detail: 'Property has been added to your favorites',
-        life: 3000
-      })
+      showToast('Property has been added to your favorites', 'success')
     }
   } catch (error) {
     console.error('Error toggling favorite:', error)
-    toast.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'Failed to update favorites. Please try again.',
-      life: 3000
-    })
+    showToast('Failed to update favorites. Please try again.', 'error')
   }
 }
 
@@ -123,12 +166,7 @@ function changeImage(index) {
 // Toggle contact form
 function toggleContactForm() {
   if (!isAuthenticated.value) {
-    toast.add({
-      severity: 'info',
-      summary: 'Authentication Required',
-      detail: 'Please sign in to contact the landlord',
-      life: 3000
-    })
+    showToast('Please sign in to contact the landlord', 'info')
     router.push({ name: 'login', query: { redirect: route.fullPath } })
     return
   }
@@ -139,12 +177,7 @@ function toggleContactForm() {
 // Send contact message
 async function sendMessage() {
   if (!contactMessage.value.trim()) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Empty Message',
-      detail: 'Please enter a message to send',
-      life: 3000
-    })
+    showToast('Please enter a message to send', 'warning')
     return
   }
   
@@ -152,12 +185,7 @@ async function sendMessage() {
   
   // Simulate API call
   setTimeout(() => {
-    toast.add({
-      severity: 'success',
-      summary: 'Message Sent',
-      detail: 'Your message has been sent to the landlord',
-      life: 3000
-    })
+    showToast('Your message has been sent to the landlord', 'success')
     
     contactMessage.value = ''
     showContactForm.value = false
@@ -168,22 +196,12 @@ async function sendMessage() {
 // Schedule a viewing
 function scheduleViewing() {
   if (!isAuthenticated.value) {
-    toast.add({
-      severity: 'info',
-      summary: 'Authentication Required',
-      detail: 'Please sign in to schedule a viewing',
-      life: 3000
-    })
+    showToast('Please sign in to schedule a viewing', 'info')
     router.push({ name: 'login', query: { redirect: route.fullPath } })
     return
   }
   
-  toast.add({
-    severity: 'success',
-    summary: 'Request Sent',
-    detail: 'Your viewing request has been sent to the landlord',
-    life: 3000
-  })
+  showToast('Your viewing request has been sent to the landlord', 'success')
 }
 
 // Initialize component
@@ -359,12 +377,13 @@ onMounted(async () => {
                 <h3>Send a Message</h3>
                 <div class="p-field">
                   <label for="message">Your message</label>
-                  <Textarea 
+                  <textarea 
                     id="message" 
                     v-model="contactMessage" 
                     rows="5" 
                     placeholder="I'm interested in this property and would like to schedule a viewing..."
-                  />
+                    class="message-textarea"
+                  ></textarea>
                 </div>
                 
                 <div class="form-actions">
@@ -680,6 +699,23 @@ onMounted(async () => {
   margin-top: 1.5rem;
 }
 
+.message-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+
+.message-textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
 /* Map section */
 .map-section {
   margin-bottom: 2rem;
@@ -689,6 +725,87 @@ onMounted(async () => {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Toast styles - Same as in App.vue */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: toastIn 0.3s ease forwards;
+  max-width: 100%;
+}
+
+.toast-hiding {
+  animation: toastOut 0.3s ease forwards;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.toast-content {
+  flex-grow: 1;
+  padding-right: 1.5rem;
+}
+
+.toast-content p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.toast-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6c757d;
+  padding: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.toast-success .toast-icon {
+  color: #28a745;
+}
+
+.toast-error .toast-icon {
+  color: #dc3545;
+}
+
+.toast-warning .toast-icon {
+  color: #ffc107;
+}
+
+.toast-info .toast-icon {
+  color: #17a2b8;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-20px); }
 }
 
 /* Similar properties */

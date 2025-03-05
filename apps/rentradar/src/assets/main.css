@@ -1,35 +1,133 @@
 @import './base.css';
 
+:root {
+  /* PrimeVue theme overrides and custom variables */
+  --primary-color: #3B82F6;
+  --secondary-color: #64748B;
+  --success-color: #22C55E;
+  --info-color: #0EA5E9;
+  --warning-color: #F59E0B;
+  --danger-color: #EF4444;
+  --border-radius: 6px;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --transition-ease: all 0.3s ease;
+}
+
+/* Base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   font-weight: normal;
+  height: 100%;
 }
 
-a,
-.green {
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--surface-900);
+}
+
+a {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+  color: var(--primary-color);
+  transition: var(--transition-ease);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+a:hover {
+  color: var(--primary-600);
+  text-decoration: underline;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.p-card {
+  transition: var(--transition-ease);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.p-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom styles for PrimeVue components */
+.p-button {
+  border-radius: var(--border-radius);
+  transition: var(--transition-ease);
+}
+
+.p-inputtext {
+  border-radius: var(--border-radius);
+}
+
+.p-dropdown {
+  border-radius: var(--border-radius);
+}
+
+.p-datatable {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.p-toast {
+  opacity: 0.95;
+}
+
+/* Layout utilities from PrimeFlex */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .content-container {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
   }
 }

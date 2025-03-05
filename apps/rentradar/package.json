@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@primeuix/styles": "^1.0.0",
+    "@primevue/core": "^4.3.1",
+    "@primevue/icons": "^4.3.1",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/core": "^12.7.0",
     "axios": "^1.8.1",
@@ -16,11 +19,13 @@
     "firebase": "^11.4.0",
     "leaflet": "^1.9.4",
     "pinia": "^3.0.1",
+    "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.1",
     "vee-validate": "^4.15.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vue-voix": "^0.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
