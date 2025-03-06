@@ -111,7 +111,7 @@ function toggleHighContrast() {
               <button 
                 class="settings-view__theme-toggle" 
                 @click="toggleTheme"
-                v-voix="'Toggle theme. Current theme: ' + (store.state.theme === 'light' ? 'light' : 'dark')"
+                v-voix="'Toggle theme'"
               >
                 <div class="settings-view__theme-toggle-track">
                   <div :class="['settings-view__theme-toggle-thumb', { 'settings-view__theme-toggle-thumb--active': store.state.theme === 'dark' }]"></div>
@@ -135,8 +135,8 @@ function toggleHighContrast() {
             <div class="settings-view__setting-control">
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': notifyLikes }]" 
-                @click="updateNotificationSetting(notifyLikes, !notifyLikes)"
-                v-voix="'Toggle like notifications. Currently: ' + (notifyLikes ? 'on' : 'off')"
+                @click="notifyLikes = !notifyLikes"
+                v-voix="'Toggle like notifications'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': notifyLikes }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': notifyLikes }]"></div>
@@ -154,8 +154,8 @@ function toggleHighContrast() {
             <div class="settings-view__setting-control">
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': notifyReplies }]" 
-                @click="updateNotificationSetting(notifyReplies, !notifyReplies)"
-                v-voix="'Toggle reply notifications. Currently: ' + (notifyReplies ? 'on' : 'off')"
+                @click="notifyReplies = !notifyReplies"
+                v-voix="'Toggle reply notifications'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': notifyReplies }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': notifyReplies }]"></div>
@@ -173,8 +173,8 @@ function toggleHighContrast() {
             <div class="settings-view__setting-control">
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': notifyMentions }]" 
-                @click="updateNotificationSetting(notifyMentions, !notifyMentions)"
-                v-voix="'Toggle mention notifications. Currently: ' + (notifyMentions ? 'on' : 'off')"
+                @click="notifyMentions = !notifyMentions"
+                v-voix="'Toggle mention notifications'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': notifyMentions }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': notifyMentions }]"></div>
@@ -192,8 +192,8 @@ function toggleHighContrast() {
             <div class="settings-view__setting-control">
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': notifyFollows }]" 
-                @click="updateNotificationSetting(notifyFollows, !notifyFollows)"
-                v-voix="'Toggle follower notifications. Currently: ' + (notifyFollows ? 'on' : 'off')"
+                @click="notifyFollows = !notifyFollows"
+                v-voix="'Toggle follower notifications'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': notifyFollows }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': notifyFollows }]"></div>
@@ -218,7 +218,7 @@ function toggleHighContrast() {
                 class="settings-view__select" 
                 :value="currentLanguage"
                 @change="changeLanguage($event.target.value)"
-                v-voix="'Language selection. Current language: ' + languages.find(l => l.value === currentLanguage).label"
+                v-voix="'Language selection'"
               >
                 <option 
                   v-for="language in languages" 
@@ -255,7 +255,7 @@ function toggleHighContrast() {
                       :value="filter.value" 
                       :checked="contentFilter === filter.value"
                       @change="updateContentFilter(filter.value)"
-                      v-voix="'Content filter option: ' + filter.label"
+                      v-voix="'Content filter option'"
                     />
                     <span>{{ filter.label }}</span>
                   </label>
@@ -315,7 +315,7 @@ function toggleHighContrast() {
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': reducedMotion }]" 
                 @click="toggleReducedMotion"
-                v-voix="'Toggle reduced motion. Currently: ' + (reducedMotion ? 'on' : 'off')"
+                v-voix="'Toggle reduced motion'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': reducedMotion }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': reducedMotion }]"></div>
@@ -334,7 +334,7 @@ function toggleHighContrast() {
               <button 
                 :class="['settings-view__toggle', { 'settings-view__toggle--active': highContrast }]" 
                 @click="toggleHighContrast"
-                v-voix="'Toggle high contrast. Currently: ' + (highContrast ? 'on' : 'off')"
+                v-voix="'Toggle high contrast'"
               >
                 <div :class="['settings-view__toggle-track', { 'settings-view__toggle-track--active': highContrast }]">
                   <div :class="['settings-view__toggle-thumb', { 'settings-view__toggle-thumb--active': highContrast }]"></div>
