@@ -126,7 +126,7 @@ function clearErrors(field) {
       </div>
       
       <div class="form-container">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleSubmit" v-voix="'Create Account Form'">
           <!-- Email field -->
           <div class="p-field">
             <label for="email">Email</label>
@@ -136,6 +136,8 @@ function clearErrors(field) {
               type="email"
               :class="{ 'p-invalid': errors.email }"
               @input="clearErrors('email')"
+              v-voix="'Signup Email Input'"
+              hint="Enter your email address"
             />
             <small class="p-error" v-if="errors.email">{{ errors.email }}</small>
           </div>
@@ -148,6 +150,8 @@ function clearErrors(field) {
               v-model="formData.displayName"
               :class="{ 'p-invalid': errors.displayName }"
               @input="clearErrors('displayName')"
+              v-voix="'Full Name Input'"
+              hint="Enter your first and last name"
             />
             <small class="p-error" v-if="errors.displayName">{{ errors.displayName }}</small>
           </div>
@@ -161,6 +165,8 @@ function clearErrors(field) {
               :toggleMask="true"
               :class="{ 'p-invalid': errors.password }"
               @input="clearErrors('password')"
+              v-voix="'Signup Password Input'"
+              hint="Create a password with at least 6 characters"
             />
             <small class="p-error" v-if="errors.password">{{ errors.password }}</small>
           </div>
@@ -175,20 +181,24 @@ function clearErrors(field) {
               :feedback="false"
               :class="{ 'p-invalid': errors.confirmPassword }"
               @input="clearErrors('confirmPassword')"
+              v-voix="'Confirm Password Input'"
+              hint="Re-enter your password to confirm"
             />
             <small class="p-error" v-if="errors.confirmPassword">{{ errors.confirmPassword }}</small>
           </div>
           
           <!-- User role selection -->
           <div class="p-field">
-            <label>I am a</label>
-            <div class="role-options">
+            <label id="role-group-label">I am a</label>
+            <div class="role-options" role="radiogroup" aria-labelledby="role-group-label">
               <div v-for="option in roleOptions" :key="option.value" class="role-option">
                 <RadioButton 
                   :id="option.value" 
                   name="role" 
                   :value="option.value" 
-                  v-model="formData.role" 
+                  v-model="formData.role"
+                  v-voix="'Role Option ' + option.label"
+                  :hint="'Select if you are a ' + option.label"
                 />
                 <label :for="option.value">{{ option.label }}</label>
               </div>
@@ -196,7 +206,7 @@ function clearErrors(field) {
           </div>
           
           <!-- Error message -->
-          <div class="form-error" v-if="errors.form">
+          <div class="form-error" v-if="errors.form" aria-live="assertive">
             <small class="p-error">{{ errors.form }}</small>
           </div>
           
@@ -207,13 +217,15 @@ function clearErrors(field) {
             icon="pi pi-user-plus"
             :loading="loading"
             class="p-button-primary signup-button"
+            v-voix="'Create Account Button'"
+            hint="Click to submit your registration information"
           />
         </form>
         
         <!-- Sign in link -->
         <div class="sign-in-link">
           <span>Already have an account?</span>
-          <router-link to="/login">Sign in</router-link>
+          <router-link to="/login" v-voix="'Sign In Link'" hint="Go to login page if you already have an account">Sign in</router-link>
         </div>
       </div>
     </div>

@@ -4,14 +4,79 @@ import { useRouter } from 'vue-router'
 import { useListingsStore } from '@/stores/listings'
 import { useFavoritesStore } from '@/stores/favorites'
 import { useAuthStore } from '@/stores/auth'
+// Import Leaflet fully first
+import L from 'leaflet'
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
-import { useToast } from 'primevue/usetoast'
+// Use custom toast implementation
+// import { useToast } from 'primevue/usetoast'
+
+// Fix icon issue with Leaflet
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+  iconUrl: new URL('leaflet/dist/images/marker-icon.png', import.meta.url).href,
+  shadowUrl: new URL('leaflet/dist/images/marker-shadow.png', import.meta.url).href
+})
+
+// Custom toast like in App.vue
+function showToast(message, type = 'info', duration = 3000) {
+  const toast = document.createElement('div')
+  toast.className = `toast toast-${type}`
+  toast.setAttribute('role', 'alert')
+  
+  const iconMap = {
+    success: 'pi pi-check-circle',
+    error: 'pi pi-times-circle',
+    warning: 'pi pi-exclamation-triangle',
+    info: 'pi pi-info-circle'
+  }
+  
+  toast.innerHTML = `
+    <div class="toast-icon">
+      <i class="${iconMap[type] || iconMap.info}"></i>
+    </div>
+    <div class="toast-content">
+      <p>${message}</p>
+    </div>
+    <button class="toast-close" aria-label="Close notification">
+      <i class="pi pi-times"></i>
+    </button>
+  `
+  
+  const container = document.getElementById('toast-container')
+  if (container) {
+    container.appendChild(toast)
+    
+    // Auto remove after duration
+    setTimeout(() => {
+      toast.classList.add('toast-hiding')
+      setTimeout(() => {
+        if (container.contains(toast)) {
+          container.removeChild(toast)
+        }
+      }, 300)
+    }, duration)
+    
+    // Close button
+    const closeBtn = toast.querySelector('.toast-close')
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        toast.classList.add('toast-hiding')
+        setTimeout(() => {
+          if (container.contains(toast)) {
+            container.removeChild(toast)
+          }
+        }, 300)
+      })
+    }
+  }
+}
 
 const router = useRouter()
 const listingsStore = useListingsStore()
 const favoritesStore = useFavoritesStore()
 const authStore = useAuthStore()
-const toast = useToast()
+// Using our custom toast implementation
 
 // View mode (list or map)
 const viewMode = ref('list')
@@ -135,12 +200,7 @@ function resetFilters() {
 // Handle favorite toggle
 async function toggleFavorite(listing) {
   if (!isAuthenticated.value) {
-    toast.add({
-      severity: 'info',
-      summary: 'Authentication Required',
-      detail: 'Please sign in to save favorites',
-      life: 3000
-    })
+    showToast('Please sign in to save favorites', 'info')
     router.push({ name: 'login', query: { redirect: router.currentRoute.value.fullPath } })
     return
   }
@@ -150,29 +210,14 @@ async function toggleFavorite(listing) {
     
     if (isFavorite) {
       await favoritesStore.removeFavorite(listing.id)
-      toast.add({
-        severity: 'success',
-        summary: 'Removed from Favorites',
-        detail: 'Property has been removed from your favorites',
-        life: 3000
-      })
+      showToast('Property has been removed from your favorites', 'success')
     } else {
       await favoritesStore.addFavorite(listing.id)
-      toast.add({
-        severity: 'success',
-        summary: 'Added to Favorites',
-        detail: 'Property has been added to your favorites',
-        life: 3000
-      })
+      showToast('Property has been added to your favorites', 'success')
     }
   } catch (error) {
     console.error('Error toggling favorite:', error)
-    toast.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'Failed to update favorites. Please try again.',
-      life: 3000
-    })
+    showToast('Failed to update favorites. Please try again.', 'error')
   }
 }
 

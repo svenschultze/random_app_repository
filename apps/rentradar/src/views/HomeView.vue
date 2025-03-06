@@ -69,7 +69,7 @@ function handleSearch() {
 <template>
   <div class="home-view">
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" v-voix="'Hero Section'" hint="Main banner with search functionality">
       <div class="hero-content">
         <h1>{{ heroTitle }}</h1>
         <p>{{ heroSubtitle }}</p>
@@ -84,7 +84,9 @@ function handleSearch() {
                   <InputText 
                     v-model="searchForm.location" 
                     placeholder="City, neighborhood, or zip code" 
-                    class="location-input" 
+                    class="location-input"
+                    v-voix="'Location Search Input'" 
+                    hint="Enter a city, neighborhood, or zip code to search"
                   />
                 </span>
               </div>
@@ -97,6 +99,8 @@ function handleSearch() {
                     optionLabel="label" 
                     optionValue="value"
                     placeholder="Property Type" 
+                    v-voix="'Property Type Dropdown'"
+                    hint="Select the type of property you're looking for"
                   />
                 </div>
                 
@@ -107,6 +111,8 @@ function handleSearch() {
                     optionLabel="label" 
                     optionValue="value"
                     placeholder="Bedrooms" 
+                    v-voix="'Bedrooms Dropdown'"
+                    hint="Select the number of bedrooms you need"
                   />
                 </div>
                 
@@ -115,7 +121,9 @@ function handleSearch() {
                     v-model.number="searchForm.priceMin" 
                     placeholder="Min Price" 
                     type="number"
-                    class="price-input" 
+                    class="price-input"
+                    v-voix="'Minimum Price Input'"
+                    hint="Enter the minimum rent price you want to pay"
                   />
                   <span>-</span>
                   <InputText 
@@ -123,6 +131,8 @@ function handleSearch() {
                     placeholder="Max Price" 
                     type="number"
                     class="price-input" 
+                    v-voix="'Maximum Price Input'"
+                    hint="Enter the maximum rent price you want to pay"
                   />
                 </div>
               </div>
@@ -133,6 +143,8 @@ function handleSearch() {
                   icon="pi pi-search" 
                   @click="handleSearch" 
                   class="p-button-primary"
+                  v-voix="'Search Properties Button'"
+                  hint="Click to search for properties with the selected filters"
                 />
               </div>
             </div>
@@ -142,7 +154,7 @@ function handleSearch() {
     </section>
     
     <!-- Featured Listings Section -->
-    <section class="featured-listings">
+    <section class="featured-listings" v-voix="'Featured Listings Section'" hint="Displays highlighted rental properties">
       <div class="section-header">
         <h2>Featured Rentals</h2>
         <Button 
@@ -150,6 +162,8 @@ function handleSearch() {
           icon="pi pi-arrow-right" 
           class="p-button-text" 
           @click="router.push('/listings')"
+          v-voix="'View All Listings Button'"
+          hint="Click to see all available rental properties"
         />
       </div>
       
@@ -159,7 +173,7 @@ function handleSearch() {
       
       <div v-else class="listings-grid">
         <div v-for="listing in featuredListings" :key="listing.id" class="listing-card">
-          <Card>
+          <Card v-voix="'Property Card for ' + listing.title" hint="Details about a rental property">
             <template #header>
               <div class="listing-image-container">
                 <img :src="`${listing.images[0]}?auto=format&fit=crop&w=600&h=400`" 
@@ -187,6 +201,8 @@ function handleSearch() {
                 label="View Details" 
                 icon="pi pi-arrow-right" 
                 @click="router.push(`/listings/${listing.id}`)" 
+                v-voix="'View Property Details Button'"
+                hint="Click to see more information about this property"
               />
             </template>
           </Card>
@@ -195,7 +211,7 @@ function handleSearch() {
     </section>
     
     <!-- How It Works Section -->
-    <section class="how-it-works">
+    <section class="how-it-works" v-voix="'How It Works Section'" hint="Explains the RentRadar rental process">
       <h2>How RentRadar Works</h2>
       
       <div class="steps-container">
@@ -234,7 +250,7 @@ function handleSearch() {
     </section>
     
     <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section" v-voix="'Call to Action Section'" hint="Encourages signing up for an account">
       <div class="cta-content">
         <h2>Start Your Rental Search Today</h2>
         <p>Create a free account to save searches, set alerts, and find your perfect home.</p>
@@ -243,6 +259,8 @@ function handleSearch() {
           icon="pi pi-user-plus" 
           class="p-button-lg" 
           @click="router.push('/signup')"
+          v-voix="'Sign Up Now Button'"
+          hint="Click to create a new account on RentRadar"
         />
       </div>
     </section>
