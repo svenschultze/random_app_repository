@@ -1,8 +1,9 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import store from '../store';
 import { getTimeSince } from '../services/mockData';
+import ShareModal from './ShareModal.vue';
 
 const props = defineProps({
   thread: {
@@ -46,6 +47,18 @@ const replyToThread = (event) => {
     params: { id: props.thread.id },
     query: { reply: 'true' }
   });
+};
+
+// Share modal
+const isShareModalOpen = ref(false);
+
+const openShareModal = (event) => {
+  event.stopPropagation();
+  isShareModalOpen.value = true;
+};
+
+const closeShareModal = () => {
+  isShareModalOpen.value = false;
 };
 </script>
 
@@ -104,7 +117,7 @@ const replyToThread = (event) => {
         
         <button 
           class="thread-item__action-btn thread-item__share-btn" 
-          @click.stop
+          @click="openShareModal"
           v-voix="'Share thread'"
           aria-label="Share"
         >
@@ -119,6 +132,13 @@ const replyToThread = (event) => {
       </div>
     </div>
   </div>
+  
+  <!-- Share Modal -->
+  <ShareModal 
+    :thread="thread" 
+    :is-open="isShareModalOpen" 
+    @close="closeShareModal" 
+  />
 </template>
 
 <style scoped>

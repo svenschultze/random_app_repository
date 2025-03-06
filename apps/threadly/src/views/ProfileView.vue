@@ -3,17 +3,25 @@ import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AppLayout from '../components/AppLayout.vue';
 import ThreadItem from '../components/ThreadItem.vue';
+import EditProfileModal from '../components/EditProfileModal.vue';
 import store from '../store';
 import { getUserThreads, getTimeSince } from '../services/mockData';
 
 const route = useRoute();
 const router = useRouter();
 
-const userId = computed(() => route.params.id);
+const userId = computed(() => {
+  // If no ID is provided or it's the string 'me', use current user ID
+  if (!route.params.id || route.params.id === 'me') {
+    return store.state.mockData.currentUser.id;
+  }
+  return route.params.id;
+});
+
 const activeTab = ref('threads');
 
 const user = computed(() => {
-  return store.state.mockData.users.find(u => u.id === userId.value);
+  return store.state.mockData.users.find(u => u.id === userId.value) || store.state.mockData.currentUser;
 });
 
 const userThreads = computed(() => {
@@ -44,6 +52,23 @@ function toggleFollow() {
 
 function setActiveTab(tab) {
   activeTab.value = tab;
+}
+
+// Edit profile modal
+const isEditProfileOpen = ref(false);
+
+function openEditProfile() {
+  isEditProfileOpen.value = true;
+}
+
+function closeEditProfile() {
+  isEditProfileOpen.value = false;
+}
+
+function saveProfile(updatedUser) {
+  // Update user data in store
+  store.updateUserProfile(userId.value, updatedUser);
+  closeEditProfile();
 }
 </script>
 
@@ -99,6 +124,7 @@ function setActiveTab(tab) {
             <button 
               v-if="isCurrentUser" 
               class="profile-view__edit-btn"
+              @click="openEditProfile"
               v-voix="'Edit profile'"
             >
               Edit profile
@@ -172,6 +198,14 @@ function setActiveTab(tab) {
         </div>
       </div>
     </div>
+    
+    <!-- Edit Profile Modal -->
+    <EditProfileModal 
+      :user="user" 
+      :is-open="isEditProfileOpen" 
+      @close="closeEditProfile" 
+      @save="saveProfile"
+    />
   </AppLayout>
 </template>
 

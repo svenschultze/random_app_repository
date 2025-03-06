@@ -116,6 +116,22 @@ const markAllNotificationsAsRead = () => {
   });
 };
 
+// Update user profile
+const updateUserProfile = (userId, updatedData) => {
+  const user = state.mockData.users.find(u => u.id === userId);
+  if (!user) return false;
+  
+  // Update user data
+  Object.assign(user, updatedData);
+  
+  // If this is the current user, update it as well
+  if (userId === state.mockData.currentUser.id) {
+    Object.assign(state.mockData.currentUser, updatedData);
+  }
+  
+  return true;
+};
+
 // Create the store object with state and actions
 const store = {
   state: readonly(state),
@@ -127,7 +143,8 @@ const store = {
   toggleFollow,
   clearComposeText,
   setComposeText,
-  markAllNotificationsAsRead
+  markAllNotificationsAsRead,
+  updateUserProfile
 };
 
 export default store;

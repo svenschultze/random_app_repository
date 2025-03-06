@@ -11,13 +11,13 @@ const unreadNotifications = computed(() => {
   return store.state.mockData.notifications.filter(n => !n.isRead).length;
 });
 
-function navigateTo(routeName) {
+function navigateTo(routeName, params = {}) {
   if (routeName === 'refresh') {
     store.refreshMockData();
     return;
   }
   
-  router.push({ name: routeName });
+  router.push({ name: routeName, params });
 }
 
 const activeRoute = computed(() => route.name);
@@ -120,8 +120,12 @@ const activeRoute = computed(() => route.name);
       </nav>
       
       <div class="app-layout__user-menu">
-        <div class="app-layout__user-info">
-          <img :src="currentUser.avatar" :alt="currentUser.username" v-voix="'Your profile'" />
+        <div 
+          class="app-layout__user-info" 
+          @click="navigateTo('profile', { id: currentUser.id })"
+          v-voix="'View your profile'"
+        >
+          <img :src="currentUser.avatar" :alt="currentUser.username" />
           <div class="app-layout__user-details">
             <div class="app-layout__user-name">{{ currentUser.displayName }}</div>
             <div class="app-layout__user-username">@{{ currentUser.username }}</div>
