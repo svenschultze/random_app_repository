@@ -14,7 +14,7 @@
     "vue": "^3.5.13",
     "vue-chartjs": "^5.3.2",
     "vue-router": "^4.5.0",
-    "vue-voix": "^0.0.3"
+    "vue-voix": "^0.0.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
