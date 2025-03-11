@@ -54,6 +54,24 @@ const toggleMobileMenu = () => {
           Workouts
         </RouterLink>
         <RouterLink 
+          to="/programs" 
+          class="nav-link" 
+          @click="isMobileMenuOpen = false"
+          v-voix="'programs-nav-link'"
+          hint="Browse training programs"
+        >
+          Programs
+        </RouterLink>
+        <RouterLink 
+          to="/interval-workouts" 
+          class="nav-link" 
+          @click="isMobileMenuOpen = false"
+          v-voix="'interval-nav-link'"
+          hint="Browse interval workouts"
+        >
+          Intervals
+        </RouterLink>
+        <RouterLink 
           to="/stats" 
           class="nav-link" 
           @click="isMobileMenuOpen = false"
@@ -70,15 +88,6 @@ const toggleMobileMenu = () => {
           hint="Adjust your fitness goals and preferences"
         >
           Settings
-        </RouterLink>
-        <RouterLink 
-          to="/about" 
-          class="nav-link" 
-          @click="isMobileMenuOpen = false"
-          v-voix="'about-nav-link'"
-          hint="Learn about this application"
-        >
-          About
         </RouterLink>
       </nav>
     </div>

@@ -60,6 +60,64 @@ const router = createRouter({
         'voix-description': 'About page with information about the FitTrack Demo application'
       }
     },
+    // Training Programs Routes
+    {
+      path: '/programs',
+      name: 'programs',
+      component: () => import('../views/ProgramsView.vue'),
+      meta: {
+        'voix-description': 'View and manage training programs and workout plans'
+      }
+    },
+    {
+      path: '/programs/:id',
+      name: 'program-detail',
+      component: () => import('../views/ProgramDetailView.vue'),
+      meta: {
+        'voix-description': 'View details and progress for a specific training program'
+      }
+    },
+    // Interval Workouts Routes
+    {
+      path: '/interval-workouts',
+      name: 'interval-workouts',
+      component: () => import('../views/IntervalWorkoutsView.vue'),
+      meta: {
+        'voix-description': 'Browse and manage interval workouts'
+      }
+    },
+    {
+      path: '/interval-workouts/:id',
+      name: 'interval-workout',
+      component: () => import('../views/IntervalWorkoutView.vue'),
+      meta: {
+        'voix-description': 'Interval workout timer and guidance'
+      }
+    },
+    {
+      path: '/interval-workouts/:id/edit',
+      name: 'edit-interval-workout',
+      component: () => import('../views/EditIntervalWorkoutView.vue'),
+      meta: {
+        'voix-description': 'Edit an existing interval workout'
+      }
+    },
+    {
+      path: '/interval-workouts/create',
+      name: 'create-interval-workout',
+      component: () => import('../views/CreateIntervalWorkoutView.vue'),
+      meta: {
+        'voix-description': 'Create a new custom interval workout'
+      }
+    },
+    {
+      path: '/workout-history',
+      name: 'workout-history',
+      component: () => import('../views/WorkoutHistoryView.vue'),
+      meta: {
+        'voix-description': 'View detailed history of all workouts including interval workouts'
+      }
+    }
   ],
 })
 

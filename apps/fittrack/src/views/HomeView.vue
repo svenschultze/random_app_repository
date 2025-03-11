@@ -14,6 +14,8 @@ import {
   calculateStreak,
   getUserSettings
 } from '@/services/dataService';
+import { getScheduledWorkouts } from '@/services/trainingProgramService';
+import { getAllIntervalWorkouts } from '@/services/intervalWorkoutService';
 
 const router = useRouter();
 const isLoading = ref(true);
@@ -23,7 +25,9 @@ const stats = reactive({
   todayLog: null,
   recentWorkouts: [],
   weeklyStats: null,
-  streak: null
+  streak: null,
+  scheduledWorkouts: [],
+  intervalWorkouts: []
 });
 
 const chartData = reactive({
@@ -71,6 +75,16 @@ const loadData = () => {
   // Calculate streak
   stats.streak = calculateStreak();
   
+  // Get scheduled workouts from training programs
+  const today = new Date().toISOString().split('T')[0];
+  stats.scheduledWorkouts = getScheduledWorkouts(today);
+  
+  // Get favorite interval workouts
+  const intervalWorkouts = getAllIntervalWorkouts();
+  stats.intervalWorkouts = intervalWorkouts
+    .filter(workout => workout.favorite)
+    .slice(0, 3);
+  
   // Prepare chart data
   const dailyLogs = getDailyLogs()
     .sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -96,6 +110,18 @@ const generateDemoData = () => {
 
 const goToAddWorkout = () => {
   router.push('/add-workout');
+};
+
+const goToPrograms = () => {
+  router.push('/programs');
+};
+
+const goToIntervalWorkouts = () => {
+  router.push('/interval-workouts');
+};
+
+const startIntervalWorkout = (workoutId) => {
+  router.push(`/interval-workouts/${workoutId}`);
 };
 
 onMounted(() => {
@@ -291,6 +317,88 @@ onMounted(() => {
           </div>
         </div>
       </section>
+      
+      <!-- Today's Scheduled Workouts Section -->
+      <section class="scheduled-workouts-section">
+        <div class="section-header">
+          <h2 class="section-title">Today's Program Workouts</h2>
+          <button 
+            class="view-all-button"
+            @click="goToPrograms"
+            v-voix="'button-view-all-programs'"
+            hint="View all training programs and plans">
+            All Programs
+          </button>
+        </div>
+        
+        <div v-if="stats.scheduledWorkouts.length === 0" class="empty-state">
+          No workouts scheduled for today. Start a training program to get daily workout plans!
+        </div>
+        
+        <div v-else class="workouts-list">
+          <div 
+            v-for="(scheduled, index) in stats.scheduledWorkouts" 
+            :key="index" 
+            class="workout-card program-workout-card">
+            <div class="program-badge">{{ scheduled.programName }}</div>
+            <div class="workout-type">{{ scheduled.workout.name }}</div>
+            <div class="workout-description">{{ scheduled.workout.description }}</div>
+            <div class="workout-details">
+              <span>{{ scheduled.workout.type }}</span>
+              <span> • {{ scheduled.workout.targetDuration }} min</span>
+              <span v-if="scheduled.workout.targetDistance"> • {{ scheduled.workout.targetDistance }} km</span>
+            </div>
+            <RouterLink 
+              :to="`/programs/${scheduled.programId}`"
+              class="program-link"
+              v-voix="'link-to-program-details-' + scheduled.programId"
+              :hint="'View workout details in ' + scheduled.programName + ' program'">
+              View in Program
+            </RouterLink>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Interval Workouts Section -->
+      <section class="interval-workouts-section">
+        <div class="section-header">
+          <h2 class="section-title">Interval Workouts</h2>
+          <button 
+            class="view-all-button"
+            @click="goToIntervalWorkouts"
+            v-voix="'button-browse-all-intervals'"
+            hint="Browse all available interval workouts">
+            Browse Intervals
+          </button>
+        </div>
+        
+        <div v-if="stats.intervalWorkouts.length === 0" class="empty-state">
+          No favorite interval workouts yet. Browse intervals to find guided workouts!
+        </div>
+        
+        <div v-else class="workouts-list">
+          <div 
+            v-for="workout in stats.intervalWorkouts" 
+            :key="workout.id" 
+            class="workout-card interval-workout-card">
+            <div class="interval-badge">Interval</div>
+            <div class="workout-type">{{ workout.name }}</div>
+            <div class="workout-description">{{ workout.description }}</div>
+            <div class="workout-details">
+              <span>{{ Math.floor(workout.totalDuration / 60) }}:{{ (workout.totalDuration % 60).toString().padStart(2, '0') }}</span>
+              <span> • {{ workout.intervals.length }} intervals</span>
+              <span> • {{ workout.estimatedCalories }} cal</span>
+            </div>
+            <button 
+              class="start-interval-btn" 
+              @click="startIntervalWorkout(workout.id)"
+              v-voix="'button-start-interval-workout-' + workout.id"
+              :hint="'Start the ' + workout.name + ' interval workout'">
+              Start Workout
+            </button>
+          </div>
+        </div>
+      </section>
     </template>
   </div>
 </template>
@@ -416,7 +524,7 @@ section {
   margin-bottom: 1.25rem;
 }
 
-.view-all-link {
+.view-all-link, .view-all-button {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
@@ -424,6 +532,17 @@ section {
 }
 
 .view-all-link:hover {
+  text-decoration: underline;
+}
+
+.view-all-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.view-all-button:hover {
   text-decoration: underline;
 }
 
@@ -461,6 +580,61 @@ section {
 .workout-details {
   color: var(--text-color);
   font-size: 0.95rem;
+}
+
+.workout-description {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.program-badge, .interval-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.program-badge {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.interval-badge {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.program-workout-card, .interval-workout-card {
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.program-link, .start-interval-btn {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  text-align: center;
+  padding: 0.5rem 0;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.program-link {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.start-interval-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .empty-state {
