@@ -2,13 +2,38 @@
 import { RouterLink, RouterView } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { initializeData } from '@/services/dataService';
+import { initializeTheme } from '@/services/themeService';
+import { initializeNotificationService } from '@/services/notificationService'; 
+import { applyDataRetention } from '@/services/privacyService';
 import VoixInput from '@/components/VoixInput.vue';
 
 const isMobileMenuOpen = ref(false);
 
 onMounted(() => {
-  // Initialize data on first load
+  // Order is important for initialization:
+  // 1. First load/generate basic data
   initializeData();
+  
+  // 2. Apply any data retention policies
+  try {
+    applyDataRetention();
+  } catch (error) {
+    console.warn('Error applying data retention:', error);
+  }
+  
+  // 3. Initialize theme with saved preferences
+  try {
+    initializeTheme();
+  } catch (error) {
+    console.warn('Error initializing theme:', error);
+  }
+  
+  // 4. Initialize notification system
+  try {
+    initializeNotificationService();
+  } catch (error) {
+    console.warn('Error initializing notifications:', error);
+  }
 });
 
 const toggleMobileMenu = () => {

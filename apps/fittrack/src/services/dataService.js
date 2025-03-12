@@ -25,7 +25,27 @@ const STORAGE_KEYS = {
 const DEFAULT_SETTINGS = {
   stepGoal: 8000,
   calorieGoal: 2500,
-  activeMinutesGoal: 30
+  activeMinutesGoal: 30,
+  // Theme settings
+  theme: 'light',
+  accentColor: 'green',
+  // Privacy settings
+  storeDataLocally: true,
+  dataRetentionDays: 90,
+  anonymousUsage: false,
+  // Notification settings
+  enableNotifications: true,
+  workoutReminders: true,
+  goalAchievements: true,
+  // Unit preferences
+  distanceUnit: 'km',
+  weightUnit: 'kg',
+  // Accessibility settings
+  highContrast: false,
+  largeText: false,
+  // Workout settings
+  workoutAutoDetect: true,
+  countdownTimer: 5,
 };
 
 // Get data from localStorage or generate if not exists
@@ -375,6 +395,7 @@ const calculateStreak = () => {
 
 export {
   WORKOUT_TYPES,
+  STORAGE_KEYS,
   getDailyLogs,
   getWorkouts,
   getUserSettings,

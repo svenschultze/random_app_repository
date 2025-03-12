@@ -1,28 +1,33 @@
 <script setup>
-// This component will be implemented later for editing interval workouts
+import { useRouter, useRoute } from 'vue-router';
+import IntervalWorkoutForm from '@/components/interval-workouts/IntervalWorkoutForm.vue';
+
+const router = useRouter();
+const route = useRoute();
+const workoutId = route.params.id;
+
+const handleSaved = () => {
+  router.push('/interval-workouts');
+};
+
+const handleCancelled = () => {
+  router.push('/interval-workouts');
+};
 </script>
 
 <template>
   <main>
-    <h2>Edit Interval Workout</h2>
-    <p>This feature is coming soon!</p>
-    <button @click="$router.push('/interval-workouts')">Back to Workouts</button>
+    <IntervalWorkoutForm 
+      :workoutId="workoutId" 
+      :isEdit="true"
+      @saved="handleSaved"
+      @cancelled="handleCancelled"
+    />
   </main>
 </template>
 
 <style scoped>
 main {
-  padding: 2rem;
-  text-align: center;
-}
-
-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 1rem;
 }
 </style>
