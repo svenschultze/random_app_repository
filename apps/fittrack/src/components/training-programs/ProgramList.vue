@@ -65,6 +65,7 @@ const formatDate = (dateString) => {
         :class="{ active: activeTab === 'predefined' }" 
         @click="activeTab = 'predefined'"
         v-voix="'tab-available-programs'"
+        :active="activeTab === 'predefined'"
         hint="Switch to available training program templates tab">
         Available Programs
       </button>
@@ -72,6 +73,7 @@ const formatDate = (dateString) => {
         :class="{ active: activeTab === 'active' }" 
         @click="activeTab = 'active'"
         v-voix="'tab-active-programs'"
+        :active="activeTab === 'active'"
         hint="Switch to your active training programs tab">
         Active Programs
       </button>
@@ -79,6 +81,7 @@ const formatDate = (dateString) => {
         :class="{ active: activeTab === 'completed' }" 
         @click="activeTab = 'completed'"
         v-voix="'tab-completed-programs'"
+        :active="activeTab === 'completed'"
         hint="Switch to your completed training programs tab">
         Completed
       </button>
