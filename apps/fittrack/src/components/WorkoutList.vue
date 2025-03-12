@@ -115,10 +115,9 @@ const handleDelete = (workout) => {
     
     <div v-else class="workout-list">
       <div 
-        v-for="workout in sortedWorkouts" 
+        v-for="(workout, index) in sortedWorkouts" 
         :key="workout.id" 
         class="workout-item"
-        v-voix="`workout-item-${workout.id}`"
         :hint="`${workout.type} workout on ${formatDate(workout.date)}`"
       >
         <div class="workout-info">
@@ -135,16 +134,16 @@ const handleDelete = (workout) => {
           <button 
             class="btn-edit" 
             @click="handleEdit(workout)"
-            v-voix="`edit-workout-${workout.id}-button`"
-            :hint="`Edit this ${workout.type} workout`"
+            v-voix="`edit-workout-${index}`"
+            :hint="`Use this button to open the edit form for this workout:\nType: ${workout.type}\nDate: ${formatDate(workout.date)}\nDuration: ${workout.duration} minutes\nDistance: ${workout.distance} km\nCalories: ${workout.caloriesBurned}`"
           >
             Edit
           </button>
           <button 
             class="btn-delete" 
             @click="handleDelete(workout)"
-            v-voix="`delete-workout-${workout.id}-button`"
-            :hint="`Delete this ${workout.type} workout`"
+            v-voix="`delete-workout-${index}`"
+            :hint="`Use this button to delete the workout:\nType: ${workout.type}\nDate: ${formatDate(workout.date)}\nDuration: ${workout.duration} minutes\nDistance: ${workout.distance} km\nCalories: ${workout.caloriesBurned}`"
           >
             Delete
           </button>

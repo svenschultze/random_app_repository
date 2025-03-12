@@ -134,6 +134,12 @@ const toggleMobileMenu = () => {
   
   <!-- Voix Input Bar -->
   <VoixInput />
+  <!--format : YYYY-MM-DD-->
+  <div
+    v-voix:hidden="'General Info'" 
+    :current_date="new Date().toISOString().split('T')[0]"
+    :current_time="new Date().toLocaleTimeString()"
+  />
 </template>
 
 <style>
