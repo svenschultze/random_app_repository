@@ -1,0 +1,168 @@
+@import './base.css';
+
+:root {
+  /* Theme variables */
+  --color-primary: #4caf50;
+  --color-primary-dark: #3d9140;
+  --color-primary-light: #e8f5e9;
+  --color-secondary: #ff9800;
+  --color-danger: #f44336;
+  --color-background: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-text: #333333;
+  --color-text-secondary: #666666;
+  --color-border: #dddddd;
+  --font-size-base: 16px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --transition-ease: all 0.3s ease;
+  
+  /* Legacy variables for compatibility */
+  --primary-color: var(--color-primary);
+  --secondary-color: var(--color-secondary);
+  --success-color: var(--color-primary);
+  --danger-color: var(--color-danger);
+  --card-shadow: var(--box-shadow);
+}
+
+/* Dark mode theming */
+.dark-mode {
+  --color-background: #121212;
+  --color-background-secondary: #222222;
+  --color-text: #f5f5f5;
+  --color-text-secondary: #bbbbbb;
+  --color-border: #444444;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Font size variations */
+html[data-font-size="small"] {
+  --font-size-base: 14px;
+}
+
+html[data-font-size="medium"] {
+  --font-size-base: 16px;
+}
+
+html[data-font-size="large"] {
+  --font-size-base: 18px;
+}
+
+/* Base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  margin: 0 auto;
+  font-weight: normal;
+  height: 100%;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--surface-900);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: var(--transition-ease);
+}
+
+a:hover {
+  color: var(--primary-600);
+  text-decoration: underline;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.p-card {
+  transition: var(--transition-ease);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.p-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom styles for PrimeVue components */
+.p-button {
+  border-radius: var(--border-radius);
+  transition: var(--transition-ease);
+}
+
+.p-inputtext {
+  border-radius: var(--border-radius);
+}
+
+.p-dropdown {
+  border-radius: var(--border-radius);
+}
+
+.p-datatable {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.p-toast {
+  opacity: 0.95;
+}
+
+/* Layout utilities from PrimeFlex */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .content-container {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
